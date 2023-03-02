@@ -11,9 +11,7 @@
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
-    "noEmit": true,
-    "declaration": true,
-    "declarationDir": "dist/dts"
+    "noEmit": true
   },
   "include": [
     "src/**/*.ts",
