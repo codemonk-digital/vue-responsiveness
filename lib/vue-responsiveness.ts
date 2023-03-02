@@ -5,7 +5,7 @@ import {
   VueResponsivenessMatches,
 } from "./types";
 
-const VueResponsiveness = {
+export default {
   install(
     app: App,
     breakpoints: VueResponsivenessBreakpoints = {
@@ -58,5 +58,3 @@ const VueResponsiveness = {
     app.config.globalProperties.$matches = matches;
   },
 };
-
-export default VueResponsiveness;

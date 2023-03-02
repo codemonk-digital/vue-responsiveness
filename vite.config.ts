@@ -1,19 +1,14 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
-import dts from "vite-plugin-dts";
 
 export default defineConfig({
-  plugins: [
-    vue(),
-    dts({
-      insertTypesEntry: true,
-    }),
-  ],
+  plugins: [vue()],
   build: {
     lib: {
-      entry: resolve(__dirname, "src/types/"),
+      entry: resolve(__dirname, "lib/vue-responsiveness"),
       name: "VueResponsiveness",
+      formats: ["es", "umd"],
       fileName: "vue-responsiveness",
     },
     rollupOptions: {
