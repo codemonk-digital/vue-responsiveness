@@ -11,7 +11,7 @@ const VueResponsiveness = {
       lg: 992,
       xl: 1200,
     }
-  ) {
+  ): App {
     const queries: Record<string, { min: string; max: string }> =
       Object.entries(breakpoints)
         .sort(([, a], [, b]) => (a || 0) - (b || 0))
@@ -52,6 +52,8 @@ const VueResponsiveness = {
     });
 
     app.config.globalProperties.$matches = matches;
+
+    return app;
   },
 };
 
