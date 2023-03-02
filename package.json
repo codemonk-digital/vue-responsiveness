@@ -13,6 +13,25 @@
       "require": "./dist/vue-responsiveness.umd.cjs"
     }
   },
+  "keywords": [
+    "vue",
+    "vue3",
+    "vue responsiveness plugin",
+    "vue plugin",
+    "responsiveness",
+    "responsive design",
+    "responsiveness breakpoints",
+    "responsiveness interval",
+    "breakpoints",
+    "bootstrap",
+    "matchmedia",
+    "match media",
+    "media query",
+    "media queries",
+    "@media",
+    "css"
+  ],
+  "repository": "github:andrei-gheorghiu/vue-responsiveness",
   "version": "1.0.0",
   "type": "module",
   "scripts": {

@@ -2,10 +2,16 @@
 
 Tiny plugin for managing responsiveness breakpoints in Vue3 apps.
 
-## Install
+## Install {.tabset .tabset-fade}
 
+### yarn
 ```terminal
 yarn add vue-responsiveness
+```
+
+### npm
+```terminal
+npm i vue-responsiveness
 ```
 
 ## Usage
@@ -41,16 +47,26 @@ createApp()
 ```
 *Note:* `<template/>` tags not required, works on any components/DOM elements
 
-## Customized breakpoint names and values
+## Custom breakpoint names and values
+
+### Bootstrap 4's [responsiveness breakpoints](https://getbootstrap.com/docs/4.6/layout/overview/#responsive-breakpoints):
 
 ```ts
-createApp()
-   .use(VueResponsiveness, {
+app.use(VueResponsiveness, {
+    xs: 0,
+    sm: 576,
+    md: 768,
+    lg: 992,
+    xl: 1200
+})
+```
+### Bespoke breakpoints
+```ts
+app.use(VueResponsiveness, {
       small: 0,
       medium: 777,
       large: 1234
    })
-   .mount('#app')
 ```
 ```html
 <!-- medium only
@@ -59,9 +75,12 @@ createApp()
   ...content
 </template>
 ```
-## `v-show` usage:
+## With `v-show`:
+`<SomeComponent />` below will be rendered at all screen sizes but will only be displayed on `md` and below:
 ```html
 <!-- rendered all the time,  but only displayed on: 
   @media (max-width: 991.9px) -->
 <SomeComponent v-show="$matches.md.max" />
 ```
+## Issues?
+[Let me know!](https://github.com/andrei-gheorghiu/vue-responsiveness/issues)
