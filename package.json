@@ -5,7 +5,7 @@
     "dist",
     "lib"
   ],
-  "types": "./lib/vue-responsiveness",
+  "types": "./lib",
   "main": "./dist/vue-responsiveness.umd.cjs",
   "module": "./dist/vue-responsiveness.js",
   "exports": {

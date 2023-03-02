@@ -1,4 +1,7 @@
-import { VueResponsivenessBreakpoints, VueResponsivenessMatches } from "./";
+import {
+  VueResponsivenessBreakpoints,
+  VueResponsivenessMatches,
+} from "./types";
 import { ReactiveVariable } from "vue/macros";
 import { App, reactive } from "vue";
 const VueResponsiveness = {
