@@ -7,8 +7,7 @@ export default defineConfig({
   plugins: [
     vue(),
     dts({
-      copyDtsFiles: true,
-      exclude: ["vite-env.d.ts"],
+      insertTypesEntry: true,
     }),
   ],
   build: {
