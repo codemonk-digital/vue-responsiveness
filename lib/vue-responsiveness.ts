@@ -1,10 +1,6 @@
+import { VueResponsivenessBreakpoints, VueResponsivenessMatches } from "./";
 import { ReactiveVariable } from "vue/macros";
 import { App, reactive } from "vue";
-import {
-  VueResponsivenessBreakpoints,
-  VueResponsivenessMatches,
-} from "./types";
-
 export default {
   install(
     app: App,

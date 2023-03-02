@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import "./style.css";
 import App from "./App.vue";
-import VueResponsiveness from "vue-responsiveness";
+import VueResponsiveness from "../lib/vue-responsiveness";
 
 createApp(App).use(VueResponsiveness).mount("#app");

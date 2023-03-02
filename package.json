@@ -37,7 +37,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vue-tsc && vite build && eslint ./dist --ext ts,tsx,js,jsx,json --fix",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx,js,jsx,json"
   },
@@ -61,8 +61,5 @@
     "vite-plugin-dts": "^2.0.2",
     "vue": "^3.2.47",
     "vue-tsc": "^1.0.24"
-  },
-  "dependencies": {
-    "vue-responsiveness": "./"
   }
 }
