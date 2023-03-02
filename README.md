@@ -2,7 +2,7 @@
 
 Tiny plugin for managing responsiveness breakpoints in Vue3 apps.
 
-## Install {.tabset .tabset-fade}
+## Install
 
 ### yarn
 ```terminal
