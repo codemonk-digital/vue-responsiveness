@@ -1,7 +1,7 @@
 import { VueResponsivenessBreakpoints, VueResponsivenessMatches } from "./";
 import { ReactiveVariable } from "vue/macros";
 import { App, reactive } from "vue";
-export default {
+const VueResponsiveness = {
   install(
     app: App,
     breakpoints: VueResponsivenessBreakpoints = {
@@ -38,7 +38,7 @@ export default {
         min: window.matchMedia(query.min),
         max: window.matchMedia(query.max),
       };
-      Object.entries(match).map(([key, query]) => {
+      Object.entries(match).forEach(([key, query]) => {
         const listener = ({ matches: val }: { matches: boolean }) => {
           const { min, max } = { ...matches[interval], [key]: val } as {
             min: boolean;
@@ -54,3 +54,5 @@ export default {
     app.config.globalProperties.$matches = matches;
   },
 };
+
+export default VueResponsiveness;
