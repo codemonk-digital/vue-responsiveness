@@ -8,7 +8,9 @@
 <a href="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main"><img src="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main.svg?style=svg" alt="CircleCI" /></a>
 <a href="https://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"/></a>
 </p>
-Extremely light plugin in both terms of size and resource consumption. I wrote it because I wanted something extremely easy to use but as light as possible.   
+Extremely light (<code>< 1kb</code> gzipped) plugin in terms of both size and runtime resource consumption.
+
+I wrote it because I wanted something extremely easy to use but as light as possible.   
 To be fair, I am a bit obsessed with both performance and ease of use. If curios, scroll down to "How it works".
 
 ### Installation
