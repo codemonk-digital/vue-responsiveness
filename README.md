@@ -2,30 +2,31 @@
 
 Tiny plugin for managing responsiveness breakpoints in Vue3 apps.
 
-## Install
+### Installation
 
-### yarn
+#### yarn
 ```terminal
 yarn add vue-responsiveness
 ```
 
-### npm
+#### npm
 ```terminal
 npm i vue-responsiveness
 ```
 
-## Usage
+### Usage
 
-By default, it implements Bootstrap 5's [responsiveness breakpoints](https://getbootstrap.com/docs/5.3/layout/breakpoints/#available-breakpoints):
+The default breakpoints value is set to Bootstrap 5's [responsiveness breakpoints](https://getbootstrap.com/docs/5.3/layout/breakpoints/#available-breakpoints) preset:
+#### main.ts
 
 ```ts
-import VueResponsiveness from 'vue-responsiveness'
+import { VueResponsiveness } from 'vue-responsiveness'
 
 createApp()
    .use(VueResponsiveness)
    .mount('#app')
 ```
-
+#### in any `<template />`:
 ```html
 <!-- sm and above
   @media (min-width: 576px) -->
@@ -35,38 +36,55 @@ createApp()
 
 <!-- sm and below
   @media (max-width: 767.9px) -->
-<template v-if="$matches.sm.max">
+<SomeComponent v-if="$matches.sm.max">
   ...content
-</template>
+</SomeComponent>
 
 <!-- sm only
   @media (min-width: 576px) and (max-width: 767.9px) -->
-<template v-if="$matches.sm.only">
+<div v-if="$matches.sm.only">
   ...content
-</template>
+</div>
 ```
-*Note:* `<template/>` tags not required, works on any components/DOM elements
 
-## Custom breakpoint names and values
+### Available breakpoint presets
 
-### Bootstrap 4's [responsiveness breakpoints](https://getbootstrap.com/docs/4.6/layout/overview/#responsive-breakpoints):
+#### Usage:
 
 ```ts
+import { VueResponsiveness, Presets } from "vue-responsiveness";
+
+app.use(VueResponsiveness, Presets.TailwindCSS)
+```
+Available presets:
+ - Bootstrap_3
+ - Bootstrap_4
+ - Bootstrap_5
+ - Bulma
+ - Chakra
+ - Foundation
+ - Ionic
+ - Material_Design
+ - Materialize
+ - Material_UI
+ - Quasar
+ - Semantic_UI
+ - Skeleton
+ - Tailwind_CSS
+ - Vuetify
+ - Windi_CSS
+
+**Notes:**
+ - If you maintain a CSS framework (or if you use one often) and you'd like its preset added, [open an issue](https://github.com/andrei-gheorghiu/vue-responsiveness/issues) or even a PR.
+ - If you spot any inconsistency in the presets (either my typo or some library update), please, let me know, I'll correct it.
+
+#### Use your own breakpoints:
+```ts
 app.use(VueResponsiveness, {
-    xs: 0,
-    sm: 576,
-    md: 768,
-    lg: 992,
-    xl: 1200
+  small: 0,
+  medium: 777,
+  large: 1234
 })
-```
-### Bespoke breakpoints
-```ts
-app.use(VueResponsiveness, {
-      small: 0,
-      medium: 777,
-      large: 1234
-   })
 ```
 ```html
 <!-- medium only
@@ -75,12 +93,12 @@ app.use(VueResponsiveness, {
   ...content
 </template>
 ```
-## With `v-show`:
+### Hide components, (while still rendering them) - usage with `v-show`:
 `<SomeComponent />` below will be rendered at all screen sizes but will only be displayed on `md` and below:
 ```html
 <!-- rendered all the time,  but only displayed on: 
   @media (max-width: 991.9px) -->
 <SomeComponent v-show="$matches.md.max" />
 ```
-## Issues?
+### Issues?
 [Let me know!](https://github.com/andrei-gheorghiu/vue-responsiveness/issues)

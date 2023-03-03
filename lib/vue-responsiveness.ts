@@ -1,19 +1,15 @@
 import {
   VueResponsivenessBreakpoints,
   VueResponsivenessMatches,
-} from "./types";
+  Presets,
+} from "./";
 import { ReactiveVariable } from "vue/macros";
 import { App, reactive } from "vue";
-const VueResponsiveness = {
+
+export const VueResponsiveness = {
   install(
     app: App,
-    breakpoints: VueResponsivenessBreakpoints = {
-      xs: 0,
-      sm: 576,
-      md: 768,
-      lg: 992,
-      xl: 1200,
-    }
+    breakpoints: VueResponsivenessBreakpoints = Presets.Bootstrap_5
   ): App {
     const queries: Record<string, { min: string; max: string }> =
       Object.entries(breakpoints)
@@ -59,5 +55,3 @@ const VueResponsiveness = {
     return app;
   },
 };
-
-export default VueResponsiveness;

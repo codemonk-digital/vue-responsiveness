@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: resolve(__dirname, "lib/vue-responsiveness"),
+      entry: resolve(__dirname, "lib/index.ts"),
       name: "VueResponsiveness",
       formats: ["es", "umd"],
       fileName: "vue-responsiveness",
