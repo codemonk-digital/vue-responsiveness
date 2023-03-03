@@ -1,9 +1,9 @@
 # Vue Responsiveness
 <p>
 <a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/dt/vue-responsiveness.svg" alt="Total Downloads"></a>
-<a href="https://github.com/c/releases"><img src="https://img.shields.io/npm/v/vue-responsiveness.svg" alt="Latest Release"></a>
-<a href="https://github.com/andrei-gheorghiu/vue-responsiveness/blob/main/LICENSE.MD"><img src="https://img.shields.io/npm/l/vue-breakpoint-compass.svg" alt="License"></a>
-<img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" />
+<a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/v/vue-responsiveness.svg" alt="Latest Release"></a>
+<a href="https://github.com/andrei-gheorghiu/vue-responsiveness/blob/main/LICENSE.MD"><img src="https://img.shields.io/npm/l/vue-responsiveness.svg" alt="License"></a>
+<img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" alt="Dependencies" />
 <a href="https://unpkg.com/vue-responsiveness"><img src="https://img.badgesize.io/https://unpkg.com/vue-responsiveness.svg?compression=gzip&label=umd:minzip" alt="unpkg umd min:gzip size" /></a>
 <a href="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main"><img src="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main.svg?style=svg" alt="CircleCI" /></a>
 <a href="https://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"/></a>
