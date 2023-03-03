@@ -11,3 +11,8 @@ jobs:
       - run:
           name: Run tests
           command: yarn coverage
+
+workflows:
+  automated-test:
+    jobs:
+      - test
