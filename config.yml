@@ -1,16 +1,13 @@
 version: 2.1
 
 jobs:
-  say-hello:
+  test:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/node:16.10
     steps:
       - checkout
+      - node/install-packages:
+          pkg-manager: yarn
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-
-workflows:
-  say-hello-workflow:
-    jobs:
-      - say-hello
+          name: Run tests
+          command: yarn coverage
