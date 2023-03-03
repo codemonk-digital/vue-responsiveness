@@ -11,7 +11,7 @@ export const VueResponsiveness = {
     app: App,
     breakpoints: VueResponsivenessBreakpoints = Presets.Bootstrap_5
   ): App {
-    const queries: Record<string, { min: string; max: string }> =
+    const intervals: Record<string, { min: string; max: string }> =
       Object.entries(breakpoints)
         .sort(([, a], [, b]) => (a || 0) - (b || 0))
         .reduce((out, [key, min], i, arr) => {
@@ -26,18 +26,18 @@ export const VueResponsiveness = {
     const matches: ReactiveVariable<VueResponsivenessMatches> = reactive({
       ...Object.assign(
         {},
-        ...Object.keys(queries).map((_) => ({
+        ...Object.keys(intervals).map((_) => ({
           [_]: { min: false, max: false, only: false },
         }))
       ),
     });
 
-    Object.entries(queries).forEach(([interval, query]) => {
-      const match: Record<"min" | "max", MediaQueryList> = {
-        min: window.matchMedia(query.min),
-        max: window.matchMedia(query.max),
+    Object.entries(intervals).forEach(([interval, mediaQueries]) => {
+      const queryLists: Record<"min" | "max", MediaQueryList> = {
+        min: window.matchMedia(mediaQueries.min),
+        max: window.matchMedia(mediaQueries.max),
       };
-      Object.entries(match).forEach(([key, query]) => {
+      Object.entries(queryLists).forEach(([key, mediaQueryList]) => {
         const listener = ({ matches: val }: { matches: boolean }) => {
           const { min, max } = { ...matches[interval], [key]: val } as {
             min: boolean;
@@ -45,8 +45,8 @@ export const VueResponsiveness = {
           };
           matches[interval] = { min, max, only: min && max };
         };
-        query.addEventListener("change", listener);
-        listener(query);
+        mediaQueryList.addEventListener("change", listener);
+        listener(mediaQueryList);
       });
     });
 

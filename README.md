@@ -1,6 +1,16 @@
 # Vue Responsiveness
+<p>
+<a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/dt/vue-responsiveness.svg" alt="Total Downloads"></a>
+<a href="https://github.com/c/releases"><img src="https://img.shields.io/npm/v/vue-responsiveness.svg" alt="Latest Release"></a>
+<a href="https://github.com/andrei-gheorghiu/vue-responsiveness/blob/main/LICENSE.MD"><img src="https://img.shields.io/npm/l/vue-breakpoint-compass.svg" alt="License"></a>
+<img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" />
+<a href="https://unpkg.com/vue-responsiveness"><img src="https://img.badgesize.io/https://unpkg.com/vue-responsiveness.svg?compression=gzip&label=umd:minzip" alt="unpkg umd min:gzip size" /></a>
+<a href="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main"><img src="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main.svg?style=svg" alt="CircleCI" /></a>
+<a href="https://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"/></a>
+</p>
+Extremely light (<code>< 1kb</code> gzipped) plugin in terms of both size and runtime resource consumption.
 
-Extremely light plugin in both terms of size and resource consumption. I wrote it because I wanted something extremely easy to use but as light as possible.   
+I wrote it because I wanted something extremely easy to use but as light as possible.   
 To be fair, I am a bit obsessed with both performance and ease of use. If curios, scroll down to "How it works".
 
 ### Installation
