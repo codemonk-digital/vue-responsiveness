@@ -76,7 +76,7 @@ Available presets:
 
 **Notes:**
  - If you maintain a CSS framework (or if you use one often) and you'd like its preset added, [open an issue](https://github.com/andrei-gheorghiu/vue-responsiveness/issues) or even a PR.
- - If you spot any inconsistency in the presets (either my typo or some library update), please, let me know, I'll correct it.
+ - If you spot any inconsistency in [the presets](https://github.com/andrei-gheorghiu/vue-responsiveness/blob/main/lib/presets.ts) (either my typo or some library update), please, let me know, I'll correct it.
 
 #### Use your own breakpoints:
 ```ts
