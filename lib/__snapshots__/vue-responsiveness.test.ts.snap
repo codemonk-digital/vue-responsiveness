@@ -1,0 +1,78 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`vue-responsiveness > should reverse unordered values 1`] = `
+<div>
+  <pre>
+    {
+  "min": {
+    "min": true,
+    "max": true,
+    "only": true
+  },
+  "max": {
+    "min": true,
+    "max": true,
+    "only": true
+  }
+}
+  </pre>
+</div>
+`;
+
+exports[`vue-responsiveness > should work 1`] = `
+<div>
+  <pre>
+    {
+  "xs": {
+    "min": true,
+    "max": true,
+    "only": true
+  },
+  "sm": {
+    "min": true,
+    "max": true,
+    "only": true
+  },
+  "md": {
+    "min": true,
+    "max": true,
+    "only": true
+  },
+  "lg": {
+    "min": true,
+    "max": true,
+    "only": true
+  },
+  "xl": {
+    "min": true,
+    "max": true,
+    "only": true
+  },
+  "xxl": {
+    "min": true,
+    "max": true,
+    "only": true
+  }
+}
+  </pre>
+</div>
+`;
+
+exports[`vue-responsiveness > should work with custom breakpoints 1`] = `
+<div>
+  <pre>
+    {
+  "min": {
+    "min": true,
+    "max": true,
+    "only": true
+  },
+  "max": {
+    "min": true,
+    "max": true,
+    "only": true
+  }
+}
+  </pre>
+</div>
+`;
