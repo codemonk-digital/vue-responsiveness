@@ -3,9 +3,9 @@ orbs:
   node: circleci/node@5.1.0
 jobs:
   test:
-    executor:
-      name: node/default
-      tag: '16'
+    docker:
+      - image: cimg/base:current
+    resource_class: medium
     steps:
       - checkout
       - node/install-packages:
