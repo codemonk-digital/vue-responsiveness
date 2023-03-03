@@ -3,16 +3,16 @@ version: 2.1
 orbs:
   browser-tools: circleci/browser-tools@1.2.3
 jobs:
-  build:
+  test:
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: "Test"
+          command: "echo testing 1 2 3..."
 
 workflows:
-  say-hello-workflow:
+  test-workflow:
     jobs:
-      - say-hello
+      - test
