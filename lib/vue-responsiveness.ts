@@ -32,12 +32,12 @@ export const VueResponsiveness = {
       ),
     });
 
-    Object.entries(intervals).forEach(([interval, query]) => {
-      const queries: Record<"min" | "max", MediaQueryList> = {
-        min: window.matchMedia(query.min),
-        max: window.matchMedia(query.max),
+    Object.entries(intervals).forEach(([interval, mediaQueries]) => {
+      const queryLists: Record<"min" | "max", MediaQueryList> = {
+        min: window.matchMedia(mediaQueries.min),
+        max: window.matchMedia(mediaQueries.max),
       };
-      Object.entries(queries).forEach(([key, query]) => {
+      Object.entries(queryLists).forEach(([key, mediaQueryList]) => {
         const listener = ({ matches: val }: { matches: boolean }) => {
           const { min, max } = { ...matches[interval], [key]: val } as {
             min: boolean;
@@ -45,8 +45,8 @@ export const VueResponsiveness = {
           };
           matches[interval] = { min, max, only: min && max };
         };
-        query.addEventListener("change", listener);
-        listener(query);
+        mediaQueryList.addEventListener("change", listener);
+        listener(mediaQueryList);
       });
     });
 
