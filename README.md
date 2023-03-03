@@ -54,7 +54,7 @@ createApp()
 ```ts
 import { VueResponsiveness, Presets } from "vue-responsiveness";
 
-app.use(VueResponsiveness, Presets.TailwindCSS)
+app.use(VueResponsiveness, Presets.Tailwind_CSS)
 ```
 Available presets:
  - Bootstrap_3
