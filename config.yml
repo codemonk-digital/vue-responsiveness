@@ -1,21 +1,18 @@
-version: '2.1'
+version: 2.1
+
 orbs:
-  node: circleci/node@5.1.0
+  browser-tools: circleci/browser-tools@1.2.3
 jobs:
-  test:
+  build:
     docker:
       - image: cimg/base:stable
-    resource_class: medium
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: yarn
       - run:
-          command: yarn coverage
-          name: Run YARN tests
+          name: "Say hello"
+          command: "echo Hello, World!"
+
 workflows:
-  test_my_app:
+  say-hello-workflow:
     jobs:
-      - test
-      - node/test:
-          test-results-path: coverage/clover.xml
+      - say-hello
