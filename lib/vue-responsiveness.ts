@@ -4,7 +4,9 @@ import {
   Presets,
 } from "./";
 import { ReactiveVariable } from "vue/macros";
-import { App, reactive } from "vue";
+import { App, computed, reactive } from "vue";
+
+let matches: ReactiveVariable<VueResponsivenessMatches<string>>;
 
 export const VueResponsiveness = {
   install(
@@ -23,14 +25,22 @@ export const VueResponsiveness = {
           };
           return out;
         }, {} as Record<string, { min: string; max: string }>);
-    const matches: ReactiveVariable<VueResponsivenessMatches> = reactive({
+    matches = reactive({
       ...Object.assign(
         {},
         ...Object.keys(intervals).map((_) => ({
           [_]: { min: false, max: false, only: false },
-        }))
+        })),
+        {
+          current: computed(
+            () =>
+              Object.entries(matches).find(
+                ([, value]) => typeof value !== "string" && value.only
+              )?.[0] as string
+          ),
+        }
       ),
-    });
+    }) as ReactiveVariable<VueResponsivenessMatches<keyof typeof breakpoints>>;
 
     Object.entries(intervals).forEach(([interval, mediaQueries]) => {
       const queryLists: Record<"min" | "max", MediaQueryList> = {
@@ -55,3 +65,5 @@ export const VueResponsiveness = {
     return app;
   },
 };
+
+export const useMatches = () => matches;
