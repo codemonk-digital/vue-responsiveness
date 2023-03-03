@@ -13,6 +13,6 @@ jobs:
           command: yarn coverage
 
 workflows:
-  automated-test:
+  automated-tests-workflow:
     jobs:
       - test
