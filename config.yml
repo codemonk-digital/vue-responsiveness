@@ -18,4 +18,4 @@ workflows:
     jobs:
       - test
       - node/test:
-          test-results-path: coverage.clover.xml
+          test-results-path: coverage/clover.xml
