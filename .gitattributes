@@ -1,0 +1,7 @@
+*.html linguist-vendored
+*.htm linguist-vendored
+*.vue linguist-vendored
+coverage/* linguist-vendored
+dist/* linguist-vendored
+public/* linguist-vendored
+src/* linguist-vendored
