@@ -17,3 +17,5 @@ workflows:
   test_my_app:
     jobs:
       - test
+      - node/test:
+          test-results-path: coverage/clover.xml
