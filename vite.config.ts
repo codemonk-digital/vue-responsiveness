@@ -11,6 +11,13 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     exclude: [...configDefaults.exclude, "**/src/*", "**/public/*"],
+    setupFiles: [resolve(__dirname, "test/setup.ts")],
+    reporters: "dot",
+  },
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "./src"),
+    },
   },
   build: {
     lib: {

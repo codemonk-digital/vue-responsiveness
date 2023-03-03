@@ -22,5 +22,8 @@ module.exports = {
   rules: {
     'vue/no-v-html': 0,
     'prettier/prettier': 'error'
+  },
+  globals: {
+    "vi": true
   }
 }
