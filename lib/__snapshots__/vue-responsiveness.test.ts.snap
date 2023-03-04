@@ -17,16 +17,12 @@ exports[`vue-responsiveness > should reverse unordered values 1`] = `
   "current": "min"
 }
   </pre>
-  <h2
-    style="color: rgba(255, 255, 255, 0.4);"
-  >
+  <h1>
      Current interval: 
-    <span
-      style="color: rgb(186, 218, 85);"
-    >
+    <span>
       min
     </span>
-  </h2>
+  </h1>
 </div>
 `;
 
@@ -67,16 +63,12 @@ exports[`vue-responsiveness > should work 1`] = `
   "current": "xs"
 }
   </pre>
-  <h2
-    style="color: rgba(255, 255, 255, 0.4);"
-  >
+  <h1>
      Current interval: 
-    <span
-      style="color: rgb(186, 218, 85);"
-    >
+    <span>
       xs
     </span>
-  </h2>
+  </h1>
 </div>
 `;
 
@@ -97,15 +89,11 @@ exports[`vue-responsiveness > should work with custom breakpoints 1`] = `
   "current": "min"
 }
   </pre>
-  <h2
-    style="color: rgba(255, 255, 255, 0.4);"
-  >
+  <h1>
      Current interval: 
-    <span
-      style="color: rgb(186, 218, 85);"
-    >
+    <span>
       min
     </span>
-  </h2>
+  </h1>
 </div>
 `;

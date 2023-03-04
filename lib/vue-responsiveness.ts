@@ -12,7 +12,7 @@ export const VueResponsiveness = {
   install(
     app: App,
     breakpoints: VueResponsivenessBreakpoints = Presets.Bootstrap_5
-  ): App {
+  ): void {
     const intervals: Record<string, { min: string; max: string }> =
       Object.entries(breakpoints)
         .sort(([, a], [, b]) => (a || 0) - (b || 0))
@@ -61,8 +61,6 @@ export const VueResponsiveness = {
     });
 
     app.config.globalProperties.$matches = matches;
-
-    return app;
   },
 };
 
