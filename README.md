@@ -8,7 +8,7 @@
 <a href="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main"><img src="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main.svg?style=svg" alt="CircleCI" /></a>
 <a href="https://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"/></a>
 </p>
-Extremely light (<code>< 1kb</code> gzipped) plugin in terms of both size and runtime resource consumption.
+Extremely light (<code>~1 kB</code> gzipped) plugin in terms of both size and runtime resource consumption.
 
 I wrote it because I wanted something extremely easy to use but as light as possible.   
 To be fair, I am a bit obsessed with both performance and ease of use. If curios, scroll down to "How it works".
@@ -58,38 +58,21 @@ createApp()
 </div>
 ```
 
-### Available breakpoint presets
-
-#### Usage:
-
+### Breakpoint presets:
 ```ts
 import { VueResponsiveness, Presets } from "vue-responsiveness";
 
 app.use(VueResponsiveness, Presets.Tailwind_CSS)
 ```
-Available presets:
- - Bootstrap_3
- - Bootstrap_4
- - Bootstrap_5
- - Bulma
- - Chakra
- - Foundation
- - Ionic
- - Material_Design
- - Materialize
- - Material_UI
- - Quasar
- - Semantic_UI
- - Skeleton
- - Tailwind_CSS
- - Vuetify
- - Windi_CSS
+All available presets:
+
+`Bootstrap_3`, `Bootstrap_4`, `Bootstrap_5`, `Bulma`, `Chakra`, `Foundation`, `Ionic`, `Material_Design`, `Materialize`, `Material_UI`, `Quasar`, `Semantic_UI`, `Skeleton`, `Tailwind_CSS`, `Vuetify`, `Windi_CSS`
 
 **Notes:**
- - If you maintain a CSS framework (or if you use one often) and you'd like its preset added, [open an issue](https://github.com/andrei-gheorghiu/vue-responsiveness/issues) or even a PR.
+ - If you maintain a CSS framework (or use one often) and want its preset added, [open an issue](https://github.com/andrei-gheorghiu/vue-responsiveness/issues) or a PR.
  - If you spot any inconsistency in [the presets](https://github.com/andrei-gheorghiu/vue-responsiveness/blob/main/lib/presets.ts) (either my typo or some library update), please, let me know, I'll correct it.
 
-#### Use your own breakpoints:
+### Bespoke intervals:
 ```ts
 app.use(VueResponsiveness, {
   small: 0,
@@ -107,15 +90,17 @@ app.use(VueResponsiveness, {
 ### Hide components, (while still rendering them) - usage with `v-show`:
 `<SomeComponent />` below will be rendered at all screen sizes but will only be displayed on `md` and below:
 ```html
-<!-- rendered all the time,  but only displayed on: 
+<!-- rendered at all times (so it keeps listeners while hidden),  but only displayed on: 
   @media (max-width: 991.9px) -->
 <SomeComponent v-show="$matches.md.max" />
 ```
-### Issues?
-[Let me know!](https://github.com/andrei-gheorghiu/vue-responsiveness/issues)
 
 ### How it works:
-- the plugin uses the native [`window.matchMedia(queryString)`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) and only reacts to changes in the query's `matches` value. It's basically the same API powering the CSS media queries. 
-- the listeners are placed on the returned `MediaQueryList` instances, which means they are removed/deleted as soon as the app is unmounted, without leaving anything bound on `<body>` or `window` object.
-- having it placed on the app instance makes it a lot more performant than the alternative of having listeners placed by each component using the plugin.
-- in terms of memory and/or CPU consumption, this approach is hundreds of times more performant than the _"traditional"_ `resize` event listener method.
+- uses the native [`window.matchMedia(queryString)`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) and only reacts to changes in the query's `matches` value. It's the same API powering CSS media queries. 
+- listeners are placed on the `MediaQueryList` instances, meaning they are garbage collected as soon as the app is unmounted, without leaving bounds events behind on `<body>` or `window` object.
+- no global polution
+- making it app-wide is lighter than having listeners bound by each component using the plugin
+- in terms of memory and/or CPU consumption, using `window.matchMadia` is a few hundred times lighter than using the _"traditional"_ `resize` event listener method
+
+### Got issues?
+[Let me know!](https://github.com/andrei-gheorghiu/vue-responsiveness/issues)
