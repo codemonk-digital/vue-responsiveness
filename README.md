@@ -10,7 +10,7 @@
 </p>
 Extremely light (<code>~1 kB</code> gzipped) plugin in terms of both size and runtime resource consumption.
 
-I wrote it because I wanted something extremely easy to use but as light as possible.   
+I wrote it because I wanted something really easy to use, as light as possible.   
 To be fair, I am a bit obsessed with both performance and ease of use. If curios, scroll down to "How it works".
 
 ### Installation
@@ -24,6 +24,10 @@ yarn add vue-responsiveness
 ```terminal
 npm i vue-responsiveness
 ```
+
+### Basic demo
+
+https://codesandbox.io/s/kind-grass-93d5q4
 
 ### Usage
 
@@ -88,18 +92,18 @@ app.use(VueResponsiveness, {
 </template>
 ```
 ### Hide components, (while still rendering them) - usage with `v-show`:
-`<SomeComponent />` below will be rendered at all screen sizes but will only be displayed on `md` and below:
+`<SomeComponent />` below will be rendered at all times but will only be displayed on `md` and below:
 ```html
-<!-- rendered at all times (so it keeps listeners while hidden),  but only displayed on: 
+<!-- rendered at all times (keeps listeners while hidden), but only displayed while: 
   @media (max-width: 991.9px) -->
 <SomeComponent v-show="$matches.md.max" />
 ```
 
 ### How it works:
 - uses the native [`window.matchMedia(queryString)`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) and only reacts to changes in the query's `matches` value. It's the same API powering CSS media queries. 
-- listeners are placed on the `MediaQueryList` instances, meaning they are garbage collected as soon as the app is unmounted, without leaving bounds events behind on `<body>` or `window` object.
-- no global polution
-- making it app-wide is lighter than having listeners bound by each component using the plugin
+- listeners are placed on the `MediaQueryList` instances, meaning they are garbage collected as soon as the app is unmounted, without leaving bound events behind on `<body>` or `window` object.
+- no global pollution
+- having it app-wide is lighter than having listeners bound by each component using it
 - in terms of memory and/or CPU consumption, using `window.matchMadia` is a few hundred times lighter than using the _"traditional"_ `resize` event listener method
 
 ### Got issues?
