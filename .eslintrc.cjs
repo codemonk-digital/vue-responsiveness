@@ -1,11 +1,15 @@
 module.exports = {
   env: {
-    node: true
+    node: true,
+  	browser: true,
+  	es2021: true
   },
   extends: [
+    'prettier',
     'eslint:recommended',
     'plugin:vue/vue3-recommended',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
+	'plugin:@typescript-eslint/recommended'
   ],
   parser: 'vue-eslint-parser',
   parserOptions: {

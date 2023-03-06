@@ -2,7 +2,7 @@
 <p>
 <a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/dt/vue-responsiveness.svg" alt="Total Downloads"></a>
 <a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/v/vue-responsiveness.svg" alt="Latest Release"></a>
-<a href="https://github.com/andrei-gheorghiu/vue-responsiveness/blob/main/LICENSE.MD"><img src="https://img.shields.io/npm/l/vue-responsiveness.svg" alt="License"></a>
+<a href="https://github.com/andrei-gheorghiu/vue-responsiveness/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/vue-responsiveness.svg" alt="License"></a>
 <img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" alt="Dependencies" />
 <a href="https://unpkg.com/vue-responsiveness"><img src="https://img.badgesize.io/https://unpkg.com/vue-responsiveness.svg?compression=gzip&label=umd:minzip" alt="unpkg umd min:gzip size" /></a>
 <a href="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main"><img src="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main.svg?style=svg" alt="CircleCI" /></a>
@@ -31,7 +31,17 @@ https://codesandbox.io/s/kind-grass-93d5q4
 
 ### Usage
 
-The default breakpoints value is set to Bootstrap 5's [responsiveness breakpoints](https://getbootstrap.com/docs/5.3/layout/breakpoints/#available-breakpoints) preset:
+*Note:* The default config value is set to Bootstrap 5's [responsiveness breakpoints](https://getbootstrap.com/docs/5.3/layout/breakpoints/#available-breakpoints) preset:
+```ts
+Presets.Bootstrap_5 = {
+  xs: 0,
+  sm: 576,
+  md: 768,
+  lg: 992,
+  xl: 1200,
+  xxl: 1400,
+}
+```
 #### main.ts
 
 ```ts

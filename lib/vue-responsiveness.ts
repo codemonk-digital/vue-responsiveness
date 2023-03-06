@@ -20,7 +20,7 @@ export const VueResponsiveness = {
           out[key] = {
             min: min ? `(min-width: ${min}px)` : "",
             max: arr[i + 1]?.[1]
-              ? `(max-width: ${arr[i + 1]?.[1]! - 0.1}px)`
+              ? `(max-width: ${(arr[i + 1][1] as number) - 0.1}px)`
               : "",
           };
           return out;
