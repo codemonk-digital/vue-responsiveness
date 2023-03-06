@@ -8,10 +8,10 @@
 <a href="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main"><img src="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main.svg?style=svg" alt="CircleCI" /></a>
 <a href="https://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"/></a>
 </p>
-Extremely light (<code>~1 kB</code> gzipped) plugin in terms of both size and runtime resource consumption.
+Tiny plugin ( in size - <code>~1 kB</code> gzipped - and runtime resource consumption, for managing responsiveness intervals in Vue3.
 
-I wrote it because I wanted something really easy to use, as light as possible.   
-To be fair, I am a bit obsessed with both performance and ease of use. If curios, scroll down to "How it works".
+I wanted something very easy to use, light as a feather.   
+To be fair, I am a bit obsessed with both performance and ease of use. If curios, scroll down to [How it works](#how-it-works).
 
 ### Installation
 
@@ -53,21 +53,18 @@ createApp()
 ```
 #### in any `<template />`:
 ```html
-<!-- sm and above
-  @media (min-width: 576px) -->
 <template v-if="$matches.sm.min">
+  <!-- @media (min-width: 576px) -->
    ...content
 </template>
 
-<!-- sm and below
-  @media (max-width: 767.9px) -->
 <SomeComponent v-if="$matches.sm.max">
+  <!-- @media (max-width: 767.9px) -->
   ...content
 </SomeComponent>
 
-<!-- sm only
-  @media (min-width: 576px) and (max-width: 767.9px) -->
 <div v-if="$matches.sm.only">
+  <!-- @media (min-width: 576px) and (max-width: 767.9px) -->
   ...content
 </div>
 ```
@@ -78,7 +75,7 @@ import { VueResponsiveness, Presets } from "vue-responsiveness";
 
 app.use(VueResponsiveness, Presets.Tailwind_CSS)
 ```
-All available presets:
+Available presets:
 
 `Bootstrap_3`, `Bootstrap_4`, `Bootstrap_5`, `Bulma`, `Chakra`, `Foundation`, `Ionic`, `Material_Design`, `Materialize`, `Material_UI`, `Quasar`, `Semantic_UI`, `Skeleton`, `Tailwind_CSS`, `Vuetify`, `Windi_CSS`
 
@@ -95,16 +92,15 @@ app.use(VueResponsiveness, {
 })
 ```
 ```html
-<!-- medium only
-  @media (min-width: 777px) and (max-width: 1233.9px) -->
 <template v-if="$matches.medium.only">
+  <!-- @media (min-width: 777px) and (max-width: 1233.9px) -->
   ...content
 </template>
 ```
 ### Hide components, (while still rendering them) - usage with `v-show`:
 `<SomeComponent />` below will be rendered at all times but will only be displayed on `md` and below:
 ```html
-<!-- rendered at all times (keeps listeners while hidden), but only displayed while: 
+<!-- rendered at all times (keeps listeners while hidden), but only displayed on 
   @media (max-width: 991.9px) -->
 <SomeComponent v-show="$matches.md.max" />
 ```
