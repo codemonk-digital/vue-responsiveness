@@ -49,7 +49,7 @@
     "windi",
     "windicss"
   ],
-  "repository": "github:andrei-gheorghiu/vue-responsiveness",
+  "repository": "github:codemonk-digital/vue-responsiveness",
   "version": "0.0.5",
   "type": "module",
   "scripts": {

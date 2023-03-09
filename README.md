@@ -2,10 +2,10 @@
 <p>
 <a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/dt/vue-responsiveness.svg" alt="Total Downloads"></a>
 <a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/v/vue-responsiveness.svg" alt="Latest Release"></a>
-<a href="https://github.com/andrei-gheorghiu/vue-responsiveness/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/vue-responsiveness.svg" alt="License"></a>
+<a href="https://github.com/codemonk-digital/vue-responsiveness/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/vue-responsiveness.svg" alt="License"></a>
 <img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" alt="Dependencies" />
 <a href="https://unpkg.com/vue-responsiveness"><img src="https://img.badgesize.io/https://unpkg.com/vue-responsiveness.svg?compression=gzip&label=umd:minzip" alt="unpkg umd min:gzip size" /></a>
-<a href="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main"><img src="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main.svg?style=svg" alt="CircleCI" /></a>
+<a href="https://circleci.com/gh/codemonk-digital/vue-responsiveness/tree/main"><img src="https://circleci.com/gh/codemonk-digital/vue-responsiveness/tree/main.svg?style=svg" alt="CircleCI" /></a>
 <a href="https://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"/></a>
 </p>
 Tiny plugin for working with responsiveness intervals, focused on
@@ -81,8 +81,8 @@ Available presets:
 `Bootstrap_3`, `Bootstrap_4`, `Bootstrap_5`, `Bulma`, `Chakra`, `Foundation`, `Ionic`, `Material_Design`, `Materialize`, `Material_UI`, `Quasar`, `Semantic_UI`, `Skeleton`, `Tailwind_CSS`, `Vuetify`, `Windi_CSS`
 
 **Notes:**
- - If you maintain a CSS framework (or use one often) and want its preset added, [open an issue](https://github.com/andrei-gheorghiu/vue-responsiveness/issues) or a PR.
- - If you spot any inconsistency in [the presets](https://github.com/andrei-gheorghiu/vue-responsiveness/blob/main/lib/presets.ts) (either my typo or some library update), please, let me know, I'll correct it.
+ - If you maintain a CSS framework (or use one often) and want its preset added, [open an issue](https://github.com/codemonk-digital/vue-responsiveness/issues) or a PR.
+ - If you spot any inconsistency in [the presets](https://github.com/codemonk-digital/vue-responsiveness/blob/main/lib/presets.ts) (either my typo or some library update), please, let me know, I'll correct it.
 
 ### Bespoke intervals:
 ```ts
@@ -123,4 +123,4 @@ const trueOnMdAndAbove = computed(() => matches.isMin('md'))
 - in terms of memory and/or CPU consumption, using `window.matchMadia` is a few hundred times lighter than using the _"traditional"_ `resize` event listener method
 
 ### Got issues?
-[Let me know!](https://github.com/andrei-gheorghiu/vue-responsiveness/issues)
+[Let me know!](https://github.com/codemonk-digital/vue-responsiveness/issues)
