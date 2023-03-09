@@ -8,9 +8,10 @@
 <a href="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main"><img src="https://circleci.com/gh/andrei-gheorghiu/vue-responsiveness/tree/main.svg?style=svg" alt="CircleCI" /></a>
 <a href="https://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"/></a>
 </p>
-Tiny plugin ( in size - <code>~1 kB</code> gzipped - and runtime resource consumption), for managing responsiveness intervals in Vue3.
+Tiny plugin for working with responsiveness intervals, focused on
+ - ease of use
+ - runtime performance.
 
-I wanted something very easy to use, light as a feather.   
 To be fair, I am a bit obsessed with both performance and ease of use. If curios, scroll down to [How it works](#how-it-works).
 
 ### Installation
@@ -53,9 +54,9 @@ createApp()
 ```
 #### in any `<template />`:
 ```html
+<!-- @media (min-width: 576px) -->
 <template v-if="$matches.sm.min">
-  <!-- @media (min-width: 576px) -->
-   ...content
+     ...content
 </template>
 
 <SomeComponent v-if="$matches.sm.max">
@@ -104,7 +105,16 @@ app.use(VueResponsiveness, {
   @media (max-width: 991.9px) -->
 <SomeComponent v-show="$matches.md.max" />
 ```
+### Use in `setup()`:
+```ts
+import { useMatches } from 'vue-responsiveness'
 
+const matches = useMatches()
+
+const currentInterval = computed(() => matches.interval)
+const trueOnSmOnly = computed(() => matches.isOnly('sm'))
+const trueOnMdAndAbove = computed(() => matches.isMin('md'))
+```
 ### How it works:
 - uses the native [`window.matchMedia(queryString)`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) and only reacts to changes in the query's `matches` value. It's the same API powering CSS media queries. 
 - listeners are placed on the `MediaQueryList` instances, meaning they are garbage collected as soon as the app is unmounted, without leaving bound events behind on `<body>` or `window` object.
