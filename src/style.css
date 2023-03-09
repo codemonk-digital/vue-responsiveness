@@ -27,8 +27,11 @@ h1 {
   line-height: 1.1;
   color: #fff6
 }
-h1 span {
+h1 span, code {
   color: #bada55;
+}
+code {
+  font-size: 2rem;
 }
 #app {
   max-width: 1280px;

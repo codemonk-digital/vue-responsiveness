@@ -20,10 +20,10 @@ describe("vue-responsiveness", () => {
       },
     }))
   );
-  const render = (preset?: VueResponsivenessBreakpoints) =>
+  const render = (breakpoints?: VueResponsivenessBreakpoints) =>
     mount(App, {
       global: {
-        plugins: [[VueResponsiveness, preset]],
+        plugins: [[VueResponsiveness, breakpoints]],
       },
     });
 
@@ -40,15 +40,16 @@ describe("vue-responsiveness", () => {
   });
 
   it("should match $matches", () => {
-    expect(render().vm.$matches).toEqual(bs5);
+    const { isMax, isMin, isOnly, ...rest } = render().vm.$matches;
+    expect(rest).toEqual(bs5);
+    expect(isMax("sm")).toBe(true);
+    expect(isMin("sm")).toBe(true);
+    expect(isOnly("sm")).toBe(true);
   });
 
   it("useMatches() should work", () => {
     const App = defineComponent({
-      setup() {
-        const matches = useMatches();
-        return { matches };
-      },
+      setup: () => ({ matches: useMatches() }),
       template: "<div />",
     });
     const { vm } = mount(App, {
@@ -56,6 +57,28 @@ describe("vue-responsiveness", () => {
         plugins: [[VueResponsiveness]],
       },
     });
-    expect(vm.matches).toEqual(bs5);
+    const { isMax, isMin, isOnly, ...rest } = vm.matches;
+    expect(rest).toEqual(bs5);
+    expect(isMax("sm")).toBe(true);
+    expect(isMin("sm")).toBe(true);
+    expect(isOnly("sm")).toBe(true);
+  });
+
+  it("should return window.matchMedia matches", () => {
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(), // deprecated
+      removeListener: vi.fn(), // deprecated
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+    const { isMax, isMin, isOnly, current } = render().vm.$matches;
+    expect(isMax("sm")).toBe(false);
+    expect(isMin("sm")).toBe(false);
+    expect(isOnly("sm")).toBe(false);
+    expect(current).toBe(undefined);
   });
 });

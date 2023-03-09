@@ -6,7 +6,7 @@ import {
 import { ReactiveVariable } from "vue/macros";
 import { App, computed, reactive } from "vue";
 
-let matches: ReactiveVariable<VueResponsivenessMatches<string>>;
+let matches: ReactiveVariable<VueResponsivenessMatches>;
 
 export const VueResponsiveness = {
   install(
@@ -26,6 +26,9 @@ export const VueResponsiveness = {
           return out;
         }, {} as Record<string, { min: string; max: string }>);
     matches = reactive({
+      isMin: computed(() => (key: string) => matches[key]?.min || false),
+      isMax: computed(() => (key: string) => matches[key]?.max || false),
+      isOnly: computed(() => (key: string) => matches[key]?.only || false),
       ...Object.assign(
         {},
         ...Object.keys(intervals).map((_) => ({
@@ -35,12 +38,12 @@ export const VueResponsiveness = {
           current: computed(
             () =>
               Object.entries(matches).find(
-                ([, value]) => typeof value !== "string" && value.only
+                ([, value]) => typeof value === "object" && value.only
               )?.[0] as string
           ),
         }
       ),
-    }) as ReactiveVariable<VueResponsivenessMatches<keyof typeof breakpoints>>;
+    });
 
     Object.entries(intervals).forEach(([interval, mediaQueries]) => {
       const queryLists: Record<"min" | "max", MediaQueryList> = {

@@ -23,6 +23,9 @@ exports[`vue-responsiveness > should reverse unordered values 1`] = `
       min
     </span>
   </h1>
+  <!--v-if-->
+  <!--v-if-->
+  <!--v-if-->
 </div>
 `;
 
@@ -69,6 +72,24 @@ exports[`vue-responsiveness > should work 1`] = `
       xs
     </span>
   </h1>
+  <h3>
+    <code>
+      sm
+    </code>
+     and below
+  </h3>
+  <h3>
+    <code>
+      md
+    </code>
+     only
+  </h3>
+  <h3>
+    <code>
+      lg
+    </code>
+     and above
+  </h3>
 </div>
 `;
 
@@ -95,5 +116,8 @@ exports[`vue-responsiveness > should work with custom breakpoints 1`] = `
       min
     </span>
   </h1>
+  <!--v-if-->
+  <!--v-if-->
+  <!--v-if-->
 </div>
 `;
