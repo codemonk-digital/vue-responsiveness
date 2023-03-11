@@ -1,14 +1,14 @@
 # Vue Responsiveness
 <p class="center">
 <a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/dt/vue-responsiveness.svg" alt="Total Downloads"></a>
-<a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/v/vue-responsiveness.svg?color=green" alt="Latest Release"></a>
-<a href="https://github.com/codemonk-digital/vue-responsiveness/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/vue-responsiveness.svg" alt="License"></a>
+<a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/v/vue-responsiveness.svg?color=deepgreen" alt="Latest Release"></a>
+<a href="https://github.com/codemonk-digital/vue-responsiveness/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/vue-responsiveness.svg?color=deepgreen" alt="License"></a>
 <img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" alt="Dependencies" />
 <a href="https://unpkg.com/vue-responsiveness"><img src="https://img.badgesize.io/https://unpkg.com/vue-responsiveness.svg?compression=gzip&label=umd:minzip" alt="unpkg umd min:gzip size" /></a>
+<img src="https://img.shields.io/badge/coverage-100%25-deepgreen" alt="Unit tests coverage"/>
+<img src="https://img.shields.io/badge/SSR-compatible-deepgreen" alt="SSR compatibility status"/>
+<a href="https://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-deepgreen.svg" alt="PRs Welcome"/></a>
 <a href="https://circleci.com/gh/codemonk-digital/vue-responsiveness/tree/main"><img src="https://circleci.com/gh/codemonk-digital/vue-responsiveness/tree/main.svg?style=svg" alt="CircleCI" /></a>
-<img src="https://img.shields.io/badge/coverage-100%25-green" alt="Unit tests coverage"/>
-<img src="https://img.shields.io/badge/SSR-compatible-green" alt="SSR compatibility status"/>
-<a href="https://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-green.svg" alt="PRs Welcome"/></a>
 </p>
 Tiny plugin for working with responsiveness intervals, focused on
  - ease of use
