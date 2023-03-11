@@ -9,9 +9,7 @@
 <img src="https://img.shields.io/badge/SSR-compatible-f9d342?style=plastic" alt="SSR compatibility status"/>
 <a href="https://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-f9d342?style=plastic" alt="PRs Welcome"/></a>
 </p>
-Tiny plugin for working with responsiveness intervals, focused on
- - ease of use
- - runtime performance.
+Tiny plugin for working with responsiveness intervals, focused on ease of use and runtime performance.
 
 To be fair, I am a bit obsessed with both performance and ease of use. If curios, scroll down to [How it works](#how-it-works).
 
