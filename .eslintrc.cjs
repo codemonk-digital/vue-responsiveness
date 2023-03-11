@@ -1,15 +1,15 @@
 module.exports = {
   env: {
     node: true,
-  	browser: true,
-  	es2021: true
+    browser: true,
+    es2021: true
   },
   extends: [
     'prettier',
     'eslint:recommended',
     'plugin:vue/vue3-recommended',
     'plugin:prettier/recommended',
-	'plugin:@typescript-eslint/recommended'
+    'plugin:@typescript-eslint/recommended'
   ],
   parser: 'vue-eslint-parser',
   parserOptions: {
@@ -22,12 +22,20 @@ module.exports = {
       jsx: false
     }
   },
-  plugins: ['prettier'],
   rules: {
     'vue/no-v-html': 0,
-    'prettier/prettier': 'error'
+    'arrow-body-style': 0,
+    'prefer-arrow-callback': 0,
+    'prettier/prettier': [
+      2,
+      {
+        singleQuote: true,
+        trailingComma: 'none',
+        semi: false
+      }
+    ]
   },
   globals: {
-    "vi": true
+    vi: true
   }
 }

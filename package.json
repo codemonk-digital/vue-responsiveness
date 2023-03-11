@@ -54,9 +54,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build && yarn lint ./dist --fix",
+    "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx,js,jsx,json",
+    "lint": "eslint . --ext ts,tsx,js,jsx,json,cjs,mjs",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
@@ -83,6 +83,13 @@
     "vue-jest": "^3.0.7",
     "vue-tsc": "^1.2.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@ionic/vue": "^6.6.1"
+  },
+  "prettier": {
+    "trailingComma": "none",
+    "semi": false,
+    "singleQuote": true
+  },
   "license": "MIT"
 }
