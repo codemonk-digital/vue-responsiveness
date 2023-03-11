@@ -1,10 +1,10 @@
-import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
+import { defineComponent } from 'vue'
 import App from '../src/App.vue'
 import { VueResponsiveness, useMatches } from './vue-responsiveness'
 import { VueResponsivenessBreakpoints } from './types'
 import { Presets } from './presets'
-import { defineComponent } from 'vue'
 
 describe('vue-responsiveness', () => {
   const bs5 = Object.assign(
