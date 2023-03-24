@@ -77,7 +77,7 @@ app.use(VueResponsiveness, Presets.Tailwind_CSS)
 ```
 Available presets:
 
-`Bootstrap_3`, `Bootstrap_4`, `Bootstrap_5`, `Bulma`, `Chakra`, `Foundation`, `Ionic`, `Material_Design`, `Materialize`, `Material_UI`, `Quasar`, `Semantic_UI`, `Skeleton`, `Tailwind_CSS`, `Vuetify`, `Windi_CSS`
+`Bootstrap_3`, `Bootstrap_4`, `Bootstrap_5`, `Bulma`, `Chakra`, `Foundation`, `Ionic`, `Master_CSS`, `Material_Design`, `Materialize`, `Material_UI`, `Quasar`, `Semantic_UI`, `Skeleton`, `Tailwind_CSS`, `Vuetify`, `Windi_CSS`
 
 **Notes:**
  - If you maintain a CSS framework (or use one often) and want its preset added, [open an issue](https://github.com/codemonk-digital/vue-responsiveness/issues) or a PR.

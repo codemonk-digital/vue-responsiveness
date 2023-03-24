@@ -1,6 +1,7 @@
 import { VueResponsivenessBreakpoints } from './types'
 
 export type PresetName =
+  | 'Ant_Design'
   | 'Bootstrap_3'
   | 'Bootstrap_4'
   | 'Bootstrap_5'
@@ -8,6 +9,7 @@ export type PresetName =
   | 'Chakra'
   | 'Foundation'
   | 'Ionic'
+  | 'Master_CSS'
   | 'Material_Design'
   | 'Materialize'
   | 'Material_UI'
@@ -19,6 +21,14 @@ export type PresetName =
   | 'Windi_CSS'
 
 export const Presets: Record<PresetName, VueResponsivenessBreakpoints> = {
+  Ant_Design: {
+    xs: 0,
+    sm: 576,
+    md: 768,
+    lg: 992,
+    xl: 1200,
+    xxl: 1600
+  },
   Bootstrap_3: {
     xs: 0,
     sm: 576,
@@ -67,6 +77,18 @@ export const Presets: Record<PresetName, VueResponsivenessBreakpoints> = {
     md: 768,
     lg: 992,
     xl: 1200
+  },
+  Master_CSS: {
+    '3xs': 360,
+    '2xs': 480,
+    xs: 600,
+    sm: 768,
+    md: 1024,
+    lg: 1280,
+    xl: 1440,
+    '2xl': 1600,
+    '3xl': 1920,
+    '4xl': 2560
   },
   Material_Design: {
     xs: 0,
