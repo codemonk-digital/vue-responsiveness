@@ -114,6 +114,25 @@ const currentInterval = computed(() => matches.interval)
 const trueOnSmOnly = computed(() => matches.isOnly('sm'))
 const trueOnMdAndAbove = computed(() => matches.isMin('md'))
 ```
+
+### Testing:
+Add the plugin to `global.plugins` when testing components using its API:
+Example
+```ts
+import MyComponent from './MyComponent.vue'
+import { VueResponsiveness } from 'vue-responsiveness'
+describe('<MyComponent />', () => {
+  it('should render', () => {
+    const wrapper = shallowMount(MyComponent, {
+      global: {
+        plugins: [VueResponsiveness]
+      }
+    })
+    expect(wrapper.element).toMatchSnapshot()
+  })
+})
+```
+
 ### How it works:
 - uses the native [`window.matchMedia(queryString)`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) and only reacts to changes in the query's `matches` value. It's the same API powering CSS media queries. 
 - listeners are placed on the `MediaQueryList` instances, meaning they are garbage collected as soon as the app is unmounted, without leaving bound events behind on `<body>` or `window` object.

@@ -10,4 +10,3 @@
     <h3 v-if="$matches.isMin('lg')"><code>lg</code> and above</h3>
   </div>
 </template>
-<script setup lang="ts"></script>
