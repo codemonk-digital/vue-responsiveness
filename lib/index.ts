@@ -1,4 +1,4 @@
-import { VueResponsivenessMatches } from './types'
+import type { VueResponsivenessMatches } from './types'
 
 declare module '@vue/runtime-core' {
   // eslint-disable-next-line no-unused-vars

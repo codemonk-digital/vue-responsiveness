@@ -1,19 +1,20 @@
 /// <reference types="vitest" />
 
-import { defineConfig } from 'vite'
-import { configDefaults } from 'vitest/config'
+import { defineConfig, UserConfigExport } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
+import { configDefaults } from 'vitest/config'
+import type { UserConfigExport as VitestConfig } from 'vitest/config'
+import dts from 'vite-plugin-dts'
 
-export default defineConfig({
-  plugins: [vue()],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    exclude: [...configDefaults.exclude, '**/src/*', '**/public/*'],
-    setupFiles: [resolve(__dirname, 'test/setup.ts')],
-    reporters: 'dot'
-  },
+const config: UserConfigExport & { test: VitestConfig } = {
+  plugins: [
+    vue(),
+    dts({
+      include: ['./lib'],
+      exclude: ['./src']
+    })
+  ],
   resolve: {
     alias: {
       '@': resolve(__dirname, './src')
@@ -34,5 +35,14 @@ export default defineConfig({
         }
       }
     }
-  }
-})
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    exclude: [...configDefaults.exclude, '**/src/*', '**/public/*'],
+    setupFiles: [resolve(__dirname, 'test/setup.ts')],
+    reporters: 'dot'
+  } as VitestConfig
+}
+
+export default defineConfig(config)

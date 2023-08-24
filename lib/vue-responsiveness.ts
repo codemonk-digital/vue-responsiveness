@@ -1,12 +1,9 @@
-import {
-  VueResponsivenessBreakpoints,
-  VueResponsivenessMatches,
-  Presets
-} from './'
-import { ReactiveVariable } from 'vue/macros'
-import { App, computed, reactive } from 'vue'
+import type { VueResponsivenessBreakpoints, VueResponsivenessMatches } from './'
+import type { App } from 'vue'
+import { Presets } from './'
+import { computed, reactive } from 'vue'
 
-let matches: ReactiveVariable<VueResponsivenessMatches>
+let matches: VueResponsivenessMatches
 
 export const VueResponsiveness = {
   install(
@@ -16,15 +13,18 @@ export const VueResponsiveness = {
     const intervals: Record<string, { min: string; max: string }> =
       Object.entries(breakpoints)
         .sort(([, a], [, b]) => (a || 0) - (b || 0))
-        .reduce((out, [key, min], i, arr) => {
-          out[key] = {
-            min: min ? `(min-width: ${min}px)` : '',
-            max: arr[i + 1]?.[1]
-              ? `(max-width: ${(arr[i + 1][1] as number) - 0.1}px)`
-              : ''
-          }
-          return out
-        }, {} as Record<string, { min: string; max: string }>)
+        .reduce(
+          (out, [key, min], i, arr) => {
+            out[key] = {
+              min: min ? `(min-width: ${min}px)` : '',
+              max: arr[i + 1]?.[1]
+                ? `(max-width: ${(arr[i + 1][1] as number) - 0.1}px)`
+                : ''
+            }
+            return out
+          },
+          {} as Record<string, { min: string; max: string }>
+        )
     matches = reactive({
       isMin: computed(() => (key: string) => matches[key]?.min || false),
       isMax: computed(() => (key: string) => matches[key]?.max || false),
