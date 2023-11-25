@@ -5,18 +5,12 @@ import { computed, reactive } from 'vue'
 
 let matches: VueResponsivenessMatches
 
-type Entries<T> = {
-  [K in keyof T]: [K, T[K]]
-}[keyof T][]
-
 export const VueResponsiveness = {
   install(
     app: App,
     breakpoints: VueResponsivenessBreakpoints = Presets.Bootstrap_5
   ): void {
-    const intervals = (
-      Object.entries(breakpoints) as Entries<typeof breakpoints>
-    )
+    const intervals = Object.entries(breakpoints)
       .sort(([, a], [, b]) => (a || 0) - (b || 0))
       .reduce(
         (out, [key, min], i, arr) => {
@@ -38,36 +32,36 @@ export const VueResponsiveness = {
         () =>
           Object.entries(matches).find(
             ([, value]) => typeof value === 'object' && value.only
-          )?.[0] as string
+          )?.[0] || ''
       ),
-      ...Object.keys(intervals).reduce(
-        (acc, key) => {
-          acc[key] = { min: false, max: false, only: false }
-          return acc
-        },
-        {} as Record<'min' | 'max' | 'only', boolean>
-      )
-    })
+      ...Object.keys(intervals).reduce((acc, key) => {
+        acc[key] = { min: false, max: false, only: false }
+        return acc
+      }, {} as Partial<VueResponsivenessMatches>)
+    }) as VueResponsivenessMatches
 
     if (typeof window !== 'undefined') {
-      ;(Object.entries(intervals) as Entries<typeof intervals>).forEach(
-        ([interval, mediaQueries]) => {
-          const queryLists = {
-            min: window.matchMedia(mediaQueries.min),
-            max: window.matchMedia(mediaQueries.max)
-          }
-          ;(Object.entries(queryLists) as Entries<typeof queryLists>).forEach(
-            ([key, mediaQueryList]) => {
-              const listener = ({ matches: val }) => {
-                const { min, max } = { ...matches[interval], [key]: val }
-                matches[interval] = { min, max, only: min && max }
-              }
-              mediaQueryList.addEventListener('change', listener)
-              listener(mediaQueryList)
-            }
-          )
+      Object.entries(intervals).forEach(([interval, mediaQueries]) => {
+        const queryLists = {
+          min: window.matchMedia(mediaQueries.min),
+          max: window.matchMedia(mediaQueries.max)
         }
-      )
+        Object.entries(queryLists).forEach(([key, mediaQueryList]) => {
+          const listener = ({
+            matches: val
+          }: MediaQueryListEventMap['change']) => {
+            const { min, max } = {
+              ...matches[interval],
+              [key]: val
+            } as { min: boolean; max: boolean }
+            matches[interval] = { min, max, only: min && max }
+          }
+          mediaQueryList.addEventListener('change', listener)
+          listener(
+            mediaQueryList as unknown as MediaQueryListEventMap['change']
+          )
+        })
+      })
     }
 
     app.config.globalProperties.$matches = matches
