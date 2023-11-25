@@ -151,3 +151,6 @@ describe('<MyComponent />', () => {
 
 ### Got issues?
 [Let me know!](https://github.com/codemonk-digital/vue-responsiveness/issues)
+
+Happy coding!  
+:: }<(((*> ::

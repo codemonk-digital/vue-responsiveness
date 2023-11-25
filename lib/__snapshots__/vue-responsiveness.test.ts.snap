@@ -4,6 +4,7 @@ exports[`vue-responsiveness > should reverse unordered values 1`] = `
 <div>
   <pre>
     {
+  "current": "min",
   "min": {
     "min": true,
     "max": true,
@@ -13,8 +14,7 @@ exports[`vue-responsiveness > should reverse unordered values 1`] = `
     "min": true,
     "max": true,
     "only": true
-  },
-  "current": "min"
+  }
 }
   </pre>
   <h1>
@@ -33,6 +33,7 @@ exports[`vue-responsiveness > should work 1`] = `
 <div>
   <pre>
     {
+  "current": "xs",
   "xs": {
     "min": true,
     "max": true,
@@ -62,8 +63,7 @@ exports[`vue-responsiveness > should work 1`] = `
     "min": true,
     "max": true,
     "only": true
-  },
-  "current": "xs"
+  }
 }
   </pre>
   <h1>
@@ -97,6 +97,7 @@ exports[`vue-responsiveness > should work with custom breakpoints 1`] = `
 <div>
   <pre>
     {
+  "current": "min",
   "min": {
     "min": true,
     "max": true,
@@ -106,8 +107,7 @@ exports[`vue-responsiveness > should work with custom breakpoints 1`] = `
     "min": true,
     "max": true,
     "only": true
-  },
-  "current": "min"
+  }
 }
   </pre>
   <h1>
