@@ -37,11 +37,12 @@ const config: UserConfigExport & { test: VitestConfig } = {
     }
   },
   test: {
+    ...configDefaults,
     globals: true,
     environment: 'jsdom',
-    exclude: [...configDefaults.exclude, '**/src/*', '**/public/*'],
+    exclude: [...configDefaults.exclude, 'src/**', 'public/**'],
     setupFiles: [resolve(__dirname, 'test/setup.ts')],
-    reporters: 'dot'
+    reporters: ['dot']
   } as VitestConfig
 }
 

@@ -79,6 +79,6 @@ describe('vue-responsiveness', () => {
     expect(isMax('sm')).toBe(false)
     expect(isMin('sm')).toBe(false)
     expect(isOnly('sm')).toBe(false)
-    expect(current).toBe(undefined)
+    expect(current).toBe('')
   })
 })

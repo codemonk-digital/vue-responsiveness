@@ -1,7 +1,7 @@
 import type { VueResponsivenessBreakpoints, VueResponsivenessMatches } from './'
 import type { App } from 'vue'
 import { Presets } from './'
-import { computed, reactive } from 'vue'
+import { reactive, computed } from 'vue'
 
 let matches: VueResponsivenessMatches
 
@@ -29,10 +29,7 @@ export const VueResponsiveness = {
       isMax: computed(() => (key: string) => matches[key]?.max || false),
       isOnly: computed(() => (key: string) => matches[key]?.only || false),
       current: computed(
-        () =>
-          Object.entries(matches).find(
-            ([, value]) => typeof value === 'object' && value.only
-          )?.[0] || ''
+        () => Object.keys(intervals).find((key) => matches[key].only) || ''
       ),
       ...Object.keys(intervals).reduce((acc, key) => {
         acc[key] = { min: false, max: false, only: false }
