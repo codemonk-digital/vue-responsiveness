@@ -7,7 +7,7 @@
 <a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/v/vue-responsiveness.svg?color=f9d342&style=plastic" alt="Latest Release"></a>
 <a href="https://github.com/codemonk-digital/vue-responsiveness/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/vue-responsiveness.svg?color=f9d342&style=plastic" alt="License"></a>
 <img src="https://img.shields.io/badge/dependencies-0-f9d342?style=plastic" alt="Dependencies" />
-<a href="https://unpkg.com/vue-responsiveness"><img src="https://img.badgesize.io/https://unpkg.com/vue-responsiveness.svg?compression=gzip&label=umd:minzip&style=plastic&color=f9d342" alt="unpkg umd min:gzip size" /></a>
+    <a href="https://unpkg.com/vue-responsiveness"><img src="https://img.shields.io/badge/umd:gzip-1.12_kB-f9d342?style=plastic" alt="unpkg umd min:gzip size" /></a>
 <img src="https://img.shields.io/badge/coverage-100%25-f9d342?style=plastic" alt="Unit tests coverage"/>
 <img src="https://img.shields.io/badge/SSR-ready-f9d342?style=plastic" alt="SSR compatibility status"/>
 <a href="https://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-f9d342?style=plastic" alt="PRs Welcome"/></a>
