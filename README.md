@@ -28,7 +28,7 @@ npm i vue-responsiveness
 
 ### Basic demo
 
-https://codesandbox.io/s/kind-grass-93d5q4
+[Codesandbox](https://codesandbox.io/p/devbox/nxqvcr)
 
 ### Usage
 
