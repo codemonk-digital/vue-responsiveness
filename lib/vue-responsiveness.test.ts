@@ -5,6 +5,7 @@ import App from '../src/App.vue'
 import { VueResponsiveness, useMatches } from './vue-responsiveness'
 import { VueResponsivenessBreakpoints } from './types'
 import { Presets } from './presets'
+import { vi } from 'vitest'
 
 describe('vue-responsiveness', () => {
   const bs5 = Object.assign(

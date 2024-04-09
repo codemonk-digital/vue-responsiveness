@@ -11,8 +11,7 @@
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "noEmit": true,
-    "isolatedModules": true,
-    "types": ["vitest/globals"]
+    "isolatedModules": true
   },
   "include": [
     "src/**/*.ts",

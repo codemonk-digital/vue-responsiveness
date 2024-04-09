@@ -1,9 +1,7 @@
-/// <reference types="vitest" />
-
 import { defineConfig, UserConfigExport } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
-import { configDefaults } from 'vitest/config'
+import { configDefaults as vitestConfig } from 'vitest/config'
 import type { UserConfigExport as VitestConfig } from 'vitest/config'
 import dts from 'vite-plugin-dts'
 
@@ -37,10 +35,12 @@ const config: UserConfigExport & { test: VitestConfig } = {
     }
   },
   test: {
-    ...configDefaults,
-    globals: true,
+    ...vitestConfig,
     environment: 'jsdom',
-    exclude: [...configDefaults.exclude, 'src/**', 'public/**'],
+    include: ['**/lib/*.{test,spec}.?(c|m)[jt]s?(x)'],
+    coverage: {
+      exclude: [...vitestConfig.coverage.exclude, '**/src/*']
+    },
     setupFiles: [resolve(__dirname, 'test/setup.ts')],
     reporters: ['dot']
   } as VitestConfig
