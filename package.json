@@ -51,7 +51,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codemonk-digital/vue-responsiveness.git"
+    "url": "git+https://github.com/ReindDooyeweerd/vue-responsiveness/tree/patch-1"
   },
   "version": "0.2.0",
   "type": "module",
