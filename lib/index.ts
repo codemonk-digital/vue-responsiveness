@@ -1,12 +1,11 @@
-import { VueResponsivenessMatches } from "./types";
+import type { VueResponsivenessMatches } from './types'
 
-declare module "@vue/runtime-core" {
-  // eslint-disable-next-line no-unused-vars
+declare module 'vue' {
   interface ComponentCustomProperties {
-    $matches: VueResponsivenessMatches;
+    $matches: VueResponsivenessMatches
   }
 }
 
-export * from "./presets";
-export * from "./types";
-export * from "./vue-responsiveness";
+export * from './presets'
+export * from './types'
+export * from './vue-responsiveness'

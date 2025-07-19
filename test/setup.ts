@@ -1,4 +1,6 @@
-Object.defineProperty(window, "matchMedia", {
+import { vi } from 'vitest'
+
+Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({
     matches: true,
@@ -8,6 +10,6 @@ Object.defineProperty(window, "matchMedia", {
     removeListener: vi.fn(), // deprecated
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
-});
+    dispatchEvent: vi.fn()
+  }))
+})

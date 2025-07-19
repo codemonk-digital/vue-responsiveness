@@ -5,7 +5,7 @@
     "dist",
     "lib"
   ],
-  "types": "./lib/index.ts",
+  "types": "./dist/index.d.ts",
   "main": "./dist/vue-responsiveness.umd.cjs",
   "module": "./dist/vue-responsiveness.js",
   "exports": {
@@ -49,14 +49,17 @@
     "windi",
     "windicss"
   ],
-  "repository": "github:andrei-gheorghiu/vue-responsiveness",
-  "version": "0.0.1-alpha.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codemonk-digital/vue-responsiveness.git"
+  },
+  "version": "0.2.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build && yarn lint ./dist --fix",
+    "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx,js,jsx,json",
+    "lint": "eslint . --ext ts,tsx,js,jsx,cjs,mjs",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
@@ -64,25 +67,35 @@
     "vue": "^3"
   },
   "devDependencies": {
-    "@types/node": "^18.14.2",
-    "@typescript-eslint/eslint-plugin": "^5.47.0",
-    "@typescript-eslint/parser": "^5.47.0",
-    "@vitejs/plugin-vue": "^4.0.0",
-    "@vitest/coverage-c8": "^0.29.2",
-    "@vue/test-utils": "^2.0.0-rc.18",
-    "eslint": "^8.35.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.8.0",
-    "jsdom": "^21.1.0",
-    "prettier": "^2.8.4",
-    "typescript": "^4.9.3",
-    "vite": "^4.1.0",
-    "vitest": "^0.29.2",
-    "vue": "^3.2.47",
-    "vue-jest": "^3.0.7",
-    "vue-tsc": "^1.0.24"
+    "@tsconfig/node22": "^22.0.2",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^22.15.32",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vitest/eslint-plugin": "^1.2.7",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.5.1",
+    "@vue/test-utils": "^2.4.6",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.29.0",
+    "eslint-plugin-vue": "~10.2.0",
+    "jiti": "^2.4.2",
+    "jsdom": "^26.1.0",
+    "npm-run-all2": "^8.0.4",
+    "prettier": "3.5.3",
+    "typescript": "~5.8.0",
+    "vite": "^6.3.5",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-vue-devtools": "^7.7.7",
+    "vitest": "^3.2.4",
+    "@vitest/coverage-v8": "^3.2.4",
+    "vue": "^3.5.17",
+    "vue-tsc": "^2.2.10"
   },
-  "dependencies": {},
-  "license": "MIT"
+  "prettier": {
+    "trailingComma": "none",
+    "semi": false,
+    "singleQuote": true
+  },
+  "license": "MIT",
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
 }
