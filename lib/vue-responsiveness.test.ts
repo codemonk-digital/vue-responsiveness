@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { defineComponent } from 'vue'
 import App from '../src/App.vue'
 import { VueResponsiveness, useMatches } from './vue-responsiveness'
-import { VueResponsivenessBreakpoints } from './types'
+import { type VueResponsivenessBreakpoints } from './types'
 import { Presets } from './presets'
 import { vi } from 'vitest'
 

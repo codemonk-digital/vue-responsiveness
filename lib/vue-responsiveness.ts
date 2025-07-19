@@ -11,7 +11,7 @@ export const VueResponsiveness = {
     breakpoints: VueResponsivenessBreakpoints = Presets.Bootstrap_5
   ): void {
     const intervals = Object.entries(breakpoints)
-      .sort(([, a], [, b]) => (a || 0) - (b || 0))
+      .sort(([, a], [, b]) => Number(a) - Number(b))
       .reduce(
         (out, [key, min], i, arr) => {
           out[key] = {
