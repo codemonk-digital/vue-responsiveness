@@ -1,6 +1,6 @@
 # Vue Responsiveness
-**What** - tiny plugin for working with responsiveness intervals, focused runtime performance and great DX.  
-**Why** - I'm obsessed with runtime performance and ease of use: see [how it works](#how-it-works).
+**What** - tiny plugin for working with responsiveness intervals, focused on runtime performance and great DX.  
+**Why** - I'm obsessed with both runtime performance (see [how it works](#how-it-works)) and ease of use.
 
 <p>
 <a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/dt/vue-responsiveness.svg?color=f9d342&style=plastic" alt="Total Downloads"></a>
@@ -66,7 +66,7 @@ import { VueResponsiveness, Presets } from "vue-responsiveness";
 app.use(VueResponsiveness, Presets.Tailwind_CSS)
 ```
 
-*Note:* The default config value is set to Bootstrap 5's [responsiveness breakpoints](https://getbootstrap.com/docs/5.3/layout/breakpoints/#available-breakpoints) preset.
+*Note:* The default value of responsiveness breakpoints is set to Bootstrap 5's [responsiveness breakpoints](https://getbootstrap.com/docs/5.3/layout/breakpoints/#available-breakpoints) preset.
 <details>
     <summary>
          Preset details:
@@ -84,13 +84,15 @@ Presets.Bootstrap_5 = {
 ```
 </details>
 
-Available presets:
+Here's the list of currently available presets:
 
 `Bootstrap_3`, `Bootstrap_4`, `Bootstrap_5`, `Bulma`, `Chakra`, `Foundation`, `Ionic`, `Master_CSS`, `Material_Design`, `Materialize`, `Material_UI`, `Quasar`, `Semantic_UI`, `Skeleton`, `Tailwind_CSS`, `Vuetify`, `Windi_CSS`
 
 *Notes:*
- - If you maintain a CSS framework (or use one often) and want its preset added, [open an issue](https://github.com/codemonk-digital/vue-responsiveness/issues) or a PR.
+ - If you maintain a CSS framework (or use one often) and want it added as a preset, [open an issue](https://github.com/codemonk-digital/vue-responsiveness/issues) or a PR.
  - If you spot any inconsistency in [the presets](https://github.com/codemonk-digital/vue-responsiveness/blob/main/lib/presets.ts) (either my typo or some library update), please, let me know, I'll correct it.
+ - You can define your own responsiveness intervals, see [Bespoke intervals](#bespoke-intervals) section below. 
+ - You can't define more than one preset and have them working in different parts of the same app. This functionality will not be added to the plugin, as it would mean no longer having a single instance of the plugin per app, which would be a performance hit for the majority of use cases. If this functionality is ever needed, consider asking it on StackOverflow, let me know about it (either opening an issue on the repo or tagging my [SO profile](https://stackoverflow.com/users/1891677/tao)) and I'll provide a solution.
 
 ### Bespoke intervals:
 ```ts
@@ -147,7 +149,7 @@ describe('<MyComponent />', () => {
 - listeners are placed on the `MediaQueryList` instances, meaning they are garbage collected as soon as the app is unmounted, without leaving bound events behind on `<body>` or `window` object.
 - no global pollution
 - only one instance per app (much lighter than having one instance per component needing it)
-- in terms of memory and/or CPU consumption, using `window.matchMadia` is a few hundred times lighter than using the _"traditional"_ `resize` event listener method
+- in terms of memory and/or CPU consumption, using `window.matchMedia` is a few hundred times lighter than using the _"traditional"_ `resize` event listener method
 
 ### Got issues?
 [Let me know!](https://github.com/codemonk-digital/vue-responsiveness/issues)
