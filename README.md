@@ -1,6 +1,6 @@
 # Vue Responsiveness
 **What** - tiny plugin for working with responsiveness intervals, focused on runtime performance and great DX.  
-**Why** - I'm obsessed with both runtime performance (see [how it works](#how-it-works)) and ease of use.
+**Why** - I'm obsessed with both runtime performance (see [how it works](#how-it-works)) and ease of use.  
 **Want to thank me?** - [Give it a star](https://github.com/codemonk-digital/vue-responsiveness)
 
 <p>
