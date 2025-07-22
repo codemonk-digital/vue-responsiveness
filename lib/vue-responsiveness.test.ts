@@ -41,11 +41,18 @@ describe('vue-responsiveness', () => {
   })
 
   it('should match $matches', () => {
-    const { isMax, isMin, isOnly, ...rest } = render().vm.$matches
+    const { isMax, isMin, isOnly, orientation, hover, prefers, ...rest } = render().vm.$matches
     expect(rest).toEqual(bs5)
     expect(isMax('sm')).toBe(true)
     expect(isMin('sm')).toBe(true)
     expect(isOnly('sm')).toBe(true)
+    expect(orientation).toBe('portrait')
+    expect(hover).toBe(true)
+    expect(prefers).toEqual({
+      colorScheme: 'light',
+      contrast: 'no-preference',
+      reducedMotion: false
+    })
   })
 
   it('useMatches() should work', () => {

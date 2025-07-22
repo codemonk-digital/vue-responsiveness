@@ -3,6 +3,21 @@ import type { App } from 'vue'
 import { Presets } from './'
 import { reactive, computed } from 'vue'
 
+type QueryConfig =
+  | ['orientation', readonly ('portrait' | 'landscape')[]]
+  | ['hover', readonly ('none' | 'hover')[]]
+  | ['prefers-color-scheme', readonly ('dark' | 'light')[], 'colorScheme']
+  | [
+  'prefers-contrast',
+  readonly ('more' | 'less' | 'custom' | 'no-preference')[],
+  'contrast'
+]
+  | [
+  'prefers-reduced-motion',
+  readonly ('reduce' | 'no-preference')[],
+  'reducedMotion'
+]
+
 let matches: VueResponsivenessMatches
 
 export const VueResponsiveness = {
@@ -45,8 +60,8 @@ export const VueResponsiveness = {
         }
         Object.entries(queryLists).forEach(([key, mediaQueryList]) => {
           const listener = ({
-            matches: val
-          }: MediaQueryListEventMap['change']) => {
+                              matches: val
+                            }: MediaQueryListEvent | MediaQueryList) => {
             const { min, max } = {
               ...matches[interval],
               [key]: val
@@ -54,9 +69,63 @@ export const VueResponsiveness = {
             matches[interval] = { min, max, only: min && max }
           }
           mediaQueryList.addEventListener('change', listener)
-          listener(
-            mediaQueryList as unknown as MediaQueryListEventMap['change']
-          )
+          listener(mediaQueryList)
+        })
+      })
+
+      const additionalQueries: QueryConfig[] = [
+        ['orientation', ['portrait', 'landscape']],
+        ['hover', ['none', 'hover']],
+        ['prefers-color-scheme', ['dark', 'light'], 'colorScheme'],
+        [
+          'prefers-contrast',
+          ['more', 'less', 'custom', 'no-preference'],
+          'contrast'
+        ],
+        ['prefers-reduced-motion', ['reduce', 'no-preference'], 'reducedMotion']
+      ]
+
+      additionalQueries.forEach(([query, values, path]) => {
+        values.forEach((value) => {
+          const mediaQuery = window.matchMedia(`(${query}: ${value})`)
+
+          const updateMatches = (l: MediaQueryListEvent | MediaQueryList) => {
+            if (l.matches) {
+              switch (query) {
+                case 'orientation': {
+                  matches[query] = value as 'portrait' | 'landscape'
+                  break
+                }
+                case 'hover': {
+                  matches[query] = value as 'none' | 'hover'
+                  break
+                }
+                default: {
+                  switch (path) {
+                    case 'colorScheme':
+                      matches.prefers[path] = value as 'dark' | 'light'
+                      break
+                    case 'contrast':
+                      matches.prefers[path] = value as
+                        | 'more'
+                        | 'less'
+                        | 'custom'
+                        | 'no-preference'
+                      break
+                    case 'reducedMotion':
+                      matches.prefers[path] = value as
+                        | 'reduce'
+                        | 'no-preference'
+                      break
+                    default:
+                  }
+                }
+              }
+            }
+          }
+
+          mediaQuery.addEventListener('change', updateMatches)
+          updateMatches(mediaQuery)
         })
       })
     }
