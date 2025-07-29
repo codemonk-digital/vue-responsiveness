@@ -5,6 +5,13 @@ exports[`vue-responsiveness > should reverse unordered values 1`] = `
   <pre>
     {
   "current": "min",
+  "hover": "hover",
+  "orientation": "landscape",
+  "prefers": {
+    "colorScheme": "light",
+    "contrast": "no-preference",
+    "reducedMotion": "no-preference"
+  },
   "min": {
     "min": true,
     "max": true,
@@ -34,6 +41,13 @@ exports[`vue-responsiveness > should work 1`] = `
   <pre>
     {
   "current": "xs",
+  "hover": "hover",
+  "orientation": "landscape",
+  "prefers": {
+    "colorScheme": "light",
+    "contrast": "no-preference",
+    "reducedMotion": "no-preference"
+  },
   "xs": {
     "min": true,
     "max": true,
@@ -98,6 +112,13 @@ exports[`vue-responsiveness > should work with custom breakpoints 1`] = `
   <pre>
     {
   "current": "min",
+  "hover": "hover",
+  "orientation": "landscape",
+  "prefers": {
+    "colorScheme": "light",
+    "contrast": "no-preference",
+    "reducedMotion": "no-preference"
+  },
   "min": {
     "min": true,
     "max": true,

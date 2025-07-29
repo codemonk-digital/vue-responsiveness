@@ -1,7 +1,17 @@
 # Vue Responsiveness
-**What** - tiny plugin for working with responsiveness intervals, focused on runtime performance and great DX.  
-**Why** - I'm obsessed with both runtime performance (see [how it works](#how-it-works)) and ease of use.  
-**Want to thank me?** - [Give it a star](https://github.com/codemonk-digital/vue-responsiveness), to let everyone know it works as advertised.
+
+A tiny, performant, and intuitive Vue 3 plugin for working with responsive breakpoints and media queries at runtime.
+
+## ✨ Features
+- **Zero dependencies**: lightweight with no external dependencies
+- **Optimal runtime performance**: leverages native `window.matchMedia` for efficient updates, hundreds of times lighter than `resize` event listeners
+- **Comprehensive media query support**: reacts to changes in viewport width, `orientation`, `hover` capability, and user preferences (`prefers-color-scheme`, `prefers-contrast` and `prefers-reduced-motion`)
+- **SSR Ready**: Works seamlessly in server-side rendered applications
+- **Flexible API access**: provides both a globally available `$matches` object (for templates) and a `useMatches()` composable (for `<script setup>`)
+- **Full TypeScript support**: offers excellent DX (developer experience) with full type inference and autocompletion
+- **Predefined breakpoint presets**: includes common presets like Bootstrap, Tailwind CSS, Material Design, and more for quick setup
+- **Custom breakpoints definition**: Define your own bespoke responsiveness intervals with ease
+- **Thorough cleanup**: All listeners are automatically garbage collected when the app unmounts, preventing memory leaks
 
 <p>
 <a href="https://www.npmjs.com/package/vue-responsiveness"><img src="https://img.shields.io/npm/dt/vue-responsiveness.svg?color=f9d342&style=plastic" alt="Total Downloads"></a>
@@ -14,21 +24,34 @@
 <a href="https://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-f9d342?style=plastic" alt="PRs Welcome"/></a>
 </p>
 
+---
+## 📦 Installation
 
-### Installation
+::: {.panel-tabset}
+### pnpm
+```bash
+pnpm install vue-responsiveness
+```
 
-#### yarn
-```terminal
+### yarn
+```bash
 yarn add vue-responsiveness
 ```
 
-#### npm
-```terminal
+### npm
+```bash
 npm i vue-responsiveness
 ```
+:::
 
-### Basic demo
+---
+## 🚀 Quick Start & Basic Usage
 
+This plugin provides reactive access to various media queries, making it easy to adapt your Vue components to different screen sizes and user preferences. You can access the responsiveness state through a global property (`$matches`) or using a composable function (`useMatches()`).
+
+The default breakpoint preset is set to Bootstrap 5. To use a different preset, or to define your own bespoke intervals, see [Breakpoint Management](#breakpoint-management) section below.
+
+### Demo
 [Codesandbox](https://codesandbox.io/p/devbox/nxqvcr)
 
 ### Usage
@@ -36,41 +59,71 @@ npm i vue-responsiveness
 #### main.ts
 
 ```ts
+import { createApp } from 'vue'
+import App from './App.vue'
 import { VueResponsiveness } from 'vue-responsiveness'
 
 createApp()
-   .use(VueResponsiveness)
+   .use(VueResponsiveness) // Uses Bootstrap 5 presets when no config specified
    .mount('#app')
 ```
-#### in any `<template />`:
+
+#### Global `$matches` object
+
+Accessible directly within any Vue component's `<template />`. Ideal for simple conditional rendering.
 ```html
-<!-- @media (min-width: 576px) -->
-<template v-if="$matches.sm.min">
-     ...content
+<template>
+   <div class="my-responsive-component">
+      <h2>Current Breakpoint: {{ $matches.current || 'N/A' }}</h2>
+
+      <p v-if="$matches.sm.min">This content shows on small screens and larger.</p>
+
+      <p v-if="$matches.md.max">This content shows on medium screens and smaller.</p>
+
+      <div v-if="$matches.lg.only" class="bg-blue-100 p-4">
+         You are currently on a large desktop screen.
+      </div>
+
+      <p v-if="$matches.orientation === 'portrait'">Device is in portrait mode.</p>
+
+      <p v-if="$matches.hover === 'none'">You are on a touch-only device.</p>
+
+      <p v-if="$matches.prefers.colorScheme === 'dark'">Dark mode is preferred.</p>
+
+      <p v-if="$matches.prefers.reducedMotion === 'reduce'">User prefers reduced motion.</p>
+   </div>
 </template>
-
-<!-- @media (max-width: 767.9px) -->
-<SomeComponent v-if="$matches.sm.max">
-  ...content
-</SomeComponent>
-
-<!-- @media (min-width: 576px) and (max-width: 767.9px) -->
-<div v-if="$matches.sm.only">
-  ...content
-</div>
 ```
 
-### Breakpoint presets:
+#### Composable (`useMatches()`)
+
+Use this composable within `<script setup>` or `setup()` function for reactive access to the plugin's state.
+
 ```ts
-import { VueResponsiveness, Presets } from "vue-responsiveness";
+import { computed } from 'vue'
+import { useMatches } from 'vue-responsiveness'
 
-app.use(VueResponsiveness, Presets.Tailwind_CSS)
+const matches = useMatches()
+
+// Example computed properties based on responsiveness state
+const isMobile = computed(() => matches.sm.max) // Roughly small screens and below
+const prefersDarkMode = computed(() => matches.prefers.colorScheme === 'dark')
+
+// You can also use the helper functions:
+const trueOnMdAndAbove = computed(() => matches.isMin('md'))
+const trueOnSmOnly = computed(() => matches.isOnly('sm'))
 ```
 
-*Note:* The default value of responsiveness breakpoints is set to Bootstrap 5's [responsiveness breakpoints](https://getbootstrap.com/docs/5.3/layout/breakpoints/#available-breakpoints) preset.
+---
+## 📐 Breakpoint Management
+
+### Using presets
+The plugin comes with a variety of predefined breakpoint presets from popular CSS frameworks.
+By default, `Presets.Bootstrap_5` ([see details](https://getbootstrap.com/docs/5.3/layout/breakpoints/#available-breakpoints)) is used if no argument is provided to `app.use(VueResponsiveness)`.
+
 <details>
     <summary>
-         Preset details:
+         Bootstrap_5 preset details:
 </summary>
 
 ```ts
@@ -84,22 +137,25 @@ Presets.Bootstrap_5 = {
 }
 ```
 </details>
+How to use any other preset:
 
+```ts
+import { VueResponsiveness, Presets } from "vue-responsiveness";
+
+app.use(VueResponsiveness, Presets.Tailwind_CSS)
+```
+
+### Available Presets
 Here's the list of currently available presets:
 
 `Bootstrap_3`, `Bootstrap_4`, `Bootstrap_5`, `Bulma`, `Chakra`, `Foundation`, `Ionic`, `Master_CSS`, `Material_Design`, `Materialize`, `Material_UI`, `Quasar`, `Semantic_UI`, `Skeleton`, `Tailwind_CSS`, `Vuetify`, `Windi_CSS`
 
-*Notes:*
- - If you maintain a CSS framework (or use one often) and want it added as a preset, [open an issue](https://github.com/codemonk-digital/vue-responsiveness/issues) or a PR.
- - If you spot any inconsistency in [the presets](https://github.com/codemonk-digital/vue-responsiveness/blob/main/lib/presets.ts) (either my typo or some library update), please, let me know, I'll correct it.
- - You can define your own responsiveness intervals, see [Bespoke intervals](#bespoke-intervals) section below. 
- - You can't define more than one preset and have them working in different parts of the same app. This is intentional and has two benefits: 
-    - there's only one instance of it and only one set of listeners
-    - the app-wide available `$matches` refers to the one plugin instance defined on the app.    
- 
-   This functionality (multiple instances) will not be added to the plugin. If this functionality is ever needed, consider asking it on StackOverflow, let me know about it (either opening an issue on the repo or tagging my [SO profile](https://stackoverflow.com/users/1891677/tao)) and I'll provide a solution/workaround for your case.
+- **Note**: This plugin is designed to have a single, app-wide instance of its responsiveness state. This ensures optimal performance by minimizing listeners and memory footprint. It also provides a consistent `$matches` object or `useMatches()` composable throughout your application. Therefore, defining multiple presets in different parts of your app is not supported and is an intentional design choice.
 
-### Bespoke intervals:
+### Defining custom breakpoints
+
+You can define your own set of breakpoint intervals by passing an object to the plugin. The keys will be your custom breakpoint names, and the values will be their `min-width` (in pixels). The plugin automatically calculates the `max-width` for each interval.
+
 ```ts
 app.use(VueResponsiveness, {
   small: 0,
@@ -107,33 +163,56 @@ app.use(VueResponsiveness, {
   large: 1234
 })
 ```
+
 ```html
 <!-- @media (min-width: 777px) and (max-width: 1233.9px) -->
 <template v-if="$matches.medium.only">
   ...content
 </template>
 ```
-### Hide components, (while still rendering them) - usage with `v-show`:
-`<SomeComponent />` below will be rendered at all times but will only be displayed on `md` and below:
-```html
-<!-- rendered at all times (keeps listeners while hidden), but only displayed on 
-  @media (max-width: 991.9px) -->
-<SomeComponent v-show="$matches.md.max" />
-```
-### Use in `setup()` or `<script setup>`:
-```ts
-import { useMatches } from 'vue-responsiveness'
 
-const matches = useMatches()
+---
+## API Reference
 
-const currentInterval = computed(() => matches.interval)
-const trueOnSmOnly = computed(() => matches.isOnly('sm'))
-const trueOnMdAndAbove = computed(() => matches.isMin('md'))
-```
+The global `$matches` object (and the object returned by `useMatches()`) provide the following properties and helper methods:
 
-### Testing:
-Add plugin to `global.plugins` when testing components using the plugin's API:
-Example
+### Breakpoint status properties
+
+These properties reflect the current viewport width relative to the defined breakpoints. Each breakpoint key (e.g., `sm`, `md`, `lg`, or your custom keys) holds an object with `min`, `max`, and `only` boolean flags.
+
+| Name                  | Type      | Description | Example Access |
+|-----------------------|-----------| ----------- | -------------- |
+| `current`             | `string`  | The name (`key`) of the breakpoint interval that currently matches the viewport's `only` condition. | `$matches.current` |
+| `[breakpointKey].min` | `boolean` | `true` if current viewport width is greater than or equal to the breakpoint's minimum value | `$matches.md.min` |
+| `[breakpointKey].max` | `boolean` | `true` if current viewport width is less than the breakpoint's maximum value | `$matches.lg.max` |
+| `[breakpointKey].only`| `boolean` | `true` if current viewport width is within the breakpoint's minimum and maximum values (exclusive of max) | `$matches.sm.only` |
+
+### Breakpoint helper methods
+
+These allow creating custom computed based on current viewport width and breakpoints.
+
+| Name                | Type      | Description | Example usage                         |
+|---------------------|-----------|-------------|---------------------------------------|
+| `isMin(breakpoint)` | `function`| Returns `true` if the viewport width is greater than or equal to the specified breakpoint's minimum value. | `matches.isMin('md')`                 |
+| `isMax(breakpoint)` | `function`| Returns `true` if the viewport width is less than or equal to the specified breakpoint's maximum value. | `matches.isMax('my-custom-interval')` |
+| `isOnly(breakpoint)`| `function`| Returns `true` if the viewport width is within the specified breakpoint's range (greater than or equal to min and less than max). | `matches.isOnly('sm')`                |
+
+### Additional media query properties
+
+These properties provide information about the device's capabilities and user preferences.
+
+| Name                    | Type                              | Description | Media query equivalent |
+|-------------------------|-----------------------------------|-------------|------------------------|
+| `orientation`           | `'portrait' \| 'landscape'`       | The current device orientation | `@media (orientation: *)` |
+| `hover`                 | `'none' \| 'hover'` | The hover capability of the device | `@media (hover: *)` |
+| `prefers.reducedMotion` | `'no-preference' \| 'reduce'` | User preference for reduced motion | `@media (prefers-reduced-motion: *)` |
+| `prefers.colorScheme` | `'light' \| 'dark'` | User preference for color scheme | `@media (prefers-color-scheme: *)` |
+| `prefers.contrast` | `'no-preference' \| 'more' \| 'less' \| 'custom'` | User preference for contrast | `@media (prefers-contrast: *)` |
+
+---
+## 🧪 Testing
+When testing components using the plugin's API you need to add the plugin to `global.plugins`. Example:
+
 ```ts
 import MyComponent from './MyComponent.vue'
 import { VueResponsiveness } from 'vue-responsiveness'
@@ -148,17 +227,19 @@ describe('<MyComponent />', () => {
   })
 })
 ```
+---
+## 💡 How It Works
+- Uses the native browser API [`window.matchMedia(queryString)`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia), the same underlying technology that powers CSS media queries
+- It subscribes to `change` events on MediaQueryList instances, reacting only when the matching status of a media query actually changes, not every time the screen size changes
+- Unlike traditional methods that often rely on the `window.resize` event,, `matchMedia` is highly optimized by browsers, offering far better performance
+- all listeners are directly attached to the `MediaQueryList` objects and automatically garbage collected when the application instance is unmounted, ensuring no global pollution or lingering event handlers.
+- the design ensures only one plugin instance and one set of listeners per Vue application, making it exceptionally light on memory and CPU consumption
 
-### How it works:
-- uses the native [`window.matchMedia(queryString)`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) and only reacts to changes in the query's `matches` value. It's the same API powering CSS media queries. 
-- listeners are placed on the `MediaQueryList` instances, meaning they are garbage collected as soon as the app is unmounted, without leaving bound events behind on `<body>` or `window` object.
-- no global pollution
-- only one instance per app (much lighter than having one instance per component needing it)
-- in terms of memory and/or CPU consumption, using `window.matchMedia` is a few hundred times lighter than using the _"traditional"_ `resize` event listener method
-
-### Got issues?
+---
+## Got issues?
 [Let me know!](https://github.com/codemonk-digital/vue-responsiveness/issues)
 
+---
 Happy coding!  
 :: }<(((*> ::
     
