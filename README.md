@@ -47,7 +47,7 @@ npm i vue-responsiveness
 
 This plugin provides reactive access to various media queries, making it easy to adapt your Vue components to different screen sizes and user preferences. You can access the responsiveness state through a global property (`$matches`) or using a composable function (`useMatches()`).
 
-The default breakpoint preset is set to Bootstrap 5. To use a different preset, or to define your own bespoke intervals, see [Breakpoint Management](#breakpoint-management) section below.
+The default breakpoint preset is set to Bootstrap 5. To use a different preset, or to define your own bespoke intervals, see [Breakpoint Management](#user-content--breakpoint-management) section below.
 
 ### Demo
 [Codesandbox](https://codesandbox.io/p/devbox/nxqvcr)
