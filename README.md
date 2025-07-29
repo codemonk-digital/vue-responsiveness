@@ -189,11 +189,11 @@ These properties reflect the current viewport width relative to the defined brea
 
 These allow creating custom computed based on current viewport width and breakpoints.
 
-| Name                | Type      | Description | Example usage                         |
-|---------------------|-----------|-------------|---------------------------------------|
-| `isMin(breakpoint)` | `function`| Returns `true` if the viewport width is greater than or equal to the specified breakpoint's minimum value. | `matches.isMin('md')`                 |
-| `isMax(breakpoint)` | `function`| Returns `true` if the viewport width is less than or equal to the specified breakpoint's maximum value. | `matches.isMax('my-custom-interval')` |
-| `isOnly(breakpoint)`| `function`| Returns `true` if the viewport width is within the specified breakpoint's range (greater than or equal to min and less than max). | `matches.isOnly('sm')`                |
+| Name                | Type                         | Description | Example usage                         |
+|---------------------|------------------------------|-------------|---------------------------------------|
+| `isMin(breakpoint)` | `(breakpointKey) => boolean` | Returns `true` if the viewport width is greater than or equal to the specified breakpoint's minimum value. | `matches.isMin('md')`                 |
+| `isMax(breakpoint)` | `(breakpointKey) => boolean`                   | Returns `true` if the viewport width is less than or equal to the specified breakpoint's maximum value. | `matches.isMax('my-custom-interval')` |
+| `isOnly(breakpoint)`| `(breakpointKey) => boolean`                   | Returns `true` if the viewport width is within the specified breakpoint's range (greater than or equal to min and less than max). | `matches.isOnly('sm')`                |
 
 ### Additional media query properties
 
