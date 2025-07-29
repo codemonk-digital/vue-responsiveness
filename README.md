@@ -27,7 +27,6 @@ A tiny, performant, and intuitive Vue 3 plugin for working with responsive break
 ---
 ## 📦 Installation
 
-::: {panel-tabset}
 ### pnpm
 ```bash
 pnpm install vue-responsiveness
@@ -42,7 +41,6 @@ yarn add vue-responsiveness
 ```bash
 npm i vue-responsiveness
 ```
-:::
 
 ---
 ## 🚀 Quick Start & Basic Usage
