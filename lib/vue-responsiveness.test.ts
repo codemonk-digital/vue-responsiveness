@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { defineComponent } from 'vue'
+import { defineComponent, type App as VueApp } from 'vue'
 import App from '../src/App.vue'
 import { VueResponsiveness, useMatches } from './vue-responsiveness'
 import { type VueResponsivenessBreakpoints } from './types'
@@ -29,6 +29,7 @@ const createMockMediaQueryList = (matches: boolean, query: string) => {
       }
     }),
     dispatchEvent: vi.fn(),
+    _listenerCount: () => listeners.length,
     _simulateChange: (newMatches: boolean) => {
       listeners.forEach((cb) => cb({ matches: newMatches }))
     }
@@ -116,6 +117,75 @@ describe('vue-responsiveness', () => {
     expect(isMin('sm')).toBe(false)
     expect(isOnly('sm')).toBe(false)
     expect(current).toBe('')
+  })
+
+  it('removes media query listeners when the app unmounts', () => {
+    const mediaQueryLists: ReturnType<typeof createMockMediaQueryList>[] = []
+
+    window.matchMedia = vi.fn((query) => {
+      const mediaQueryList = createMockMediaQueryList(true, query)
+      mediaQueryLists.push(mediaQueryList)
+
+      return mediaQueryList
+    })
+
+    const wrapper = render()
+
+    expect(mediaQueryLists.length).toBeGreaterThan(0)
+    expect(mediaQueryLists.every((item) => item._listenerCount() === 1)).toBe(
+      true
+    )
+
+    wrapper.unmount()
+
+    expect(mediaQueryLists.every((item) => item._listenerCount() === 0)).toBe(
+      true
+    )
+  })
+
+  it('can clean up more than once without removing listeners again', () => {
+    const mediaQueryLists: ReturnType<typeof createMockMediaQueryList>[] = []
+    const originalUnmount = vi.fn()
+    const app = {
+      unmount: originalUnmount,
+      config: { globalProperties: {} }
+    } as unknown as VueApp
+
+    window.matchMedia = vi.fn((query) => {
+      const mediaQueryList = createMockMediaQueryList(true, query)
+      mediaQueryLists.push(mediaQueryList)
+
+      return mediaQueryList
+    })
+
+    VueResponsiveness.install(app)
+
+    app.unmount()
+    app.unmount()
+
+    expect(originalUnmount).toHaveBeenCalledTimes(2)
+    expect(
+      mediaQueryLists.every(
+        (item) => item.removeEventListener.mock.calls.length === 1
+      )
+    ).toBe(true)
+  })
+
+  it('can install during server rendering', () => {
+    const app = {
+      unmount: vi.fn(),
+      config: { globalProperties: {} }
+    } as unknown as VueApp
+
+    vi.stubGlobal('window', undefined)
+
+    VueResponsiveness.install(app)
+
+    expect(app.config.globalProperties.$matches.current).toBe('')
+    expect(app.config.globalProperties.$matches.isMin('sm')).toBe(false)
+
+    app.unmount()
+    vi.unstubAllGlobals()
   })
 
   it('media query: hover', () => {

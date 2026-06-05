@@ -1,14 +1,20 @@
 import { defineConfig, UserConfigExport } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
-import dts from 'vite-plugin-dts'
+import dts from 'unplugin-dts/vite'
 
 const config: UserConfigExport = {
   plugins: [
     vue(),
     dts({
+      tsconfigPath: './tsconfig.app.json',
       include: ['./lib'],
-      exclude: ['./src']
+      exclude: ['./src', './lib/**/*.test.ts'],
+      beforeWriteFile(filePath) {
+        return {
+          filePath: filePath.replace(/([/\\]dist)[/\\]lib([/\\])/, '$1$2')
+        }
+      }
     })
   ],
   resolve: {
@@ -23,7 +29,7 @@ const config: UserConfigExport = {
       formats: ['es', 'umd'],
       fileName: 'vue-responsiveness'
     },
-    rollupOptions: {
+    rolldownOptions: {
       external: ['vue'],
       output: {
         globals: {

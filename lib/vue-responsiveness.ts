@@ -31,6 +31,20 @@ export const VueResponsiveness = {
     app: App,
     breakpoints: VueResponsivenessBreakpoints = Presets.Bootstrap_5
   ): void {
+    const cleanups: (() => void)[] = []
+    let cleanedUp = false
+    const cleanup = () => {
+      if (cleanedUp) return
+      cleanedUp = true
+      cleanups.splice(0).forEach((removeListener) => removeListener())
+    }
+
+    const unmount = app.unmount.bind(app)
+    app.unmount = (...args) => {
+      cleanup()
+      unmount(...args)
+    }
+
     const intervals = Object.entries(breakpoints)
       .sort(([, a], [, b]) => Number(a) - Number(b))
       .reduce(
@@ -82,6 +96,9 @@ export const VueResponsiveness = {
             matches[interval] = { min, max, only: min && max }
           }
           mediaQueryList.addEventListener('change', listener)
+          cleanups.push(() =>
+            mediaQueryList.removeEventListener('change', listener)
+          )
           listener(mediaQueryList)
         })
       })
@@ -130,7 +147,6 @@ export const VueResponsiveness = {
                         | 'reduce'
                         | 'no-preference'
                       break
-                    default:
                   }
                 }
               }
@@ -138,6 +154,9 @@ export const VueResponsiveness = {
           }
 
           mediaQuery.addEventListener('change', updateMatches)
+          cleanups.push(() =>
+            mediaQuery.removeEventListener('change', updateMatches)
+          )
           updateMatches(mediaQuery)
         })
       })
