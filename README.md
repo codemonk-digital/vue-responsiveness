@@ -89,6 +89,8 @@ Every component can read `$matches` in its template, without importing.
 
 Use the composable when you need responsive state in computed values, watchers, or methods.
 
+Call `useMatches()` synchronously during `setup()` or `<script setup>` after registering the plugin. It resolves the state belonging to that Vue app and throws a descriptive error when called outside setup or without the plugin. Keep the returned object for use in callbacks and methods.
+
 ```vue
 <script setup lang="ts">
 import { computed } from 'vue'
@@ -157,6 +159,8 @@ Presets.Bootstrap_5 = {
 </details>
 
 Vue Responsiveness is designed to have one app-wide breakpoint configuration. Register the plugin once, close to `createApp()`, so all components read from the same `$matches` object.
+
+Separate Vue apps, including server-rendered apps, have independent state and listeners. Unmounting one app removes only its listeners. Each breakpoint status object keeps its identity as the viewport changes, so retaining `const md = matches.md` preserves reactivity.
 
 ### Define custom breakpoints
 

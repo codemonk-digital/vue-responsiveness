@@ -1,7 +1,10 @@
-import type { VueResponsivenessBreakpoints, VueResponsivenessMatches } from './'
-import type { App } from 'vue'
-import { Presets } from './'
-import { reactive, computed } from 'vue'
+import type {
+  VueResponsivenessBreakpoints,
+  VueResponsivenessMatches
+} from './types'
+import type { App, InjectionKey } from 'vue'
+import { Presets } from './presets'
+import { reactive, computed, getCurrentInstance, inject } from 'vue'
 
 type Orientation = 'portrait' | 'landscape'
 type Hover = 'none' | 'hover'
@@ -10,21 +13,13 @@ type PrefersContrast = 'more' | 'less' | 'custom' | 'no-preference'
 type PrefersReducedMotion = 'reduce' | 'no-preference'
 type QueryConfig =
   | ['orientation', readonly Orientation[]]
-  | ['hover', readonly (Hover)[]]
+  | ['hover', readonly Hover[]]
   | ['prefers-color-scheme', readonly PrefersColorScheme[], 'colorScheme']
-  | [
-  'prefers-contrast',
-  readonly (PrefersContrast)[],
-  'contrast'
-]
-  | [
-  'prefers-reduced-motion',
-  readonly PrefersReducedMotion[],
-  'reducedMotion'
-]
+  | ['prefers-contrast', readonly PrefersContrast[], 'contrast']
+  | ['prefers-reduced-motion', readonly PrefersReducedMotion[], 'reducedMotion']
 
-let matches: VueResponsivenessMatches
-
+const matchesKey: InjectionKey<VueResponsivenessMatches> =
+  Symbol('VueResponsiveness')
 
 export const VueResponsiveness = {
   install(
@@ -59,10 +54,10 @@ export const VueResponsiveness = {
         },
         {} as Record<string, { min: string; max: string }>
       )
-    matches = reactive({
-      isMin: computed(() => (key: string) => matches[key]?.min || false),
-      isMax: computed(() => (key: string) => matches[key]?.max || false),
-      isOnly: computed(() => (key: string) => matches[key]?.only || false),
+    const matches: VueResponsivenessMatches = reactive({
+      isMin: (key: string) => matches[key]?.min || false,
+      isMax: (key: string) => matches[key]?.max || false,
+      isOnly: (key: string) => matches[key]?.only || false,
       current: computed(
         () => Object.keys(intervals).find((key) => matches[key].only) || ''
       ),
@@ -87,13 +82,13 @@ export const VueResponsiveness = {
         }
         Object.entries(queryLists).forEach(([key, mediaQueryList]) => {
           const listener = ({
-                              matches: val
-                            }: MediaQueryListEvent | MediaQueryList) => {
+            matches: val
+          }: MediaQueryListEvent | MediaQueryList) => {
             const { min, max } = {
               ...matches[interval],
               [key]: val
             } as { min: boolean; max: boolean }
-            matches[interval] = { min, max, only: min && max }
+            Object.assign(matches[interval], { min, max, only: min && max })
           }
           mediaQueryList.addEventListener('change', listener)
           cleanups.push(() =>
@@ -137,15 +132,11 @@ export const VueResponsiveness = {
                       break
                     case 'contrast':
                       matches.prefers[path] = value as
-                        | 'more'
-                        | 'less'
-                        | 'custom'
-                        | 'no-preference'
+                        'more' | 'less' | 'custom' | 'no-preference'
                       break
                     case 'reducedMotion':
                       matches.prefers[path] = value as
-                        | 'reduce'
-                        | 'no-preference'
+                        'reduce' | 'no-preference'
                       break
                   }
                 }
@@ -162,8 +153,19 @@ export const VueResponsiveness = {
       })
     }
 
+    app.provide(matchesKey, matches)
     app.config.globalProperties.$matches = matches
   }
 }
 
-export const useMatches = () => matches
+export const useMatches = (): VueResponsivenessMatches => {
+  if (!getCurrentInstance()) {
+    throw new Error('useMatches() must be called during Vue setup().')
+  }
+
+  const matches = inject(matchesKey, undefined)
+  if (!matches) {
+    throw new Error('Install VueResponsiveness before calling useMatches().')
+  }
+  return matches
+}

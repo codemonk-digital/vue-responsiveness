@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createSSRApp, defineComponent, h, nextTick } from 'vue'
+import { renderToString } from 'vue/server-renderer'
 import { VueResponsiveness, useMatches } from './vue-responsiveness'
 import type { VueResponsivenessBreakpoints } from './types'
 import { mediaQueries } from '../test/setup'
@@ -154,5 +155,103 @@ describe('responsive state', () => {
     app.use(VueResponsiveness)
     expect(app.config.globalProperties.$matches.current).toBe('')
     expect(app.config.globalProperties.$matches.isMin('md')).toBe(false)
+  })
+
+  it('keeps two apps with different breakpoints independent', async () => {
+    const first = render({ md: 600, wide: 1000 })
+    const second = render({ compact: 0, wide: 900 })
+
+    mediaQueries.update({ width: 800 })
+    await nextTick()
+
+    expect(first.attributes()).toMatchObject({
+      'data-current': 'md',
+      'data-min': 'true',
+      'data-max': 'true',
+      'data-only': 'true'
+    })
+    expect(second.attributes('data-current')).toBe('compact')
+    expect(JSON.parse(second.text())).not.toHaveProperty('md')
+  })
+
+  it('keeps a retained breakpoint object reactive', async () => {
+    const wrapper = mount(
+      defineComponent({
+        setup() {
+          const { md } = useMatches()
+          return () => h('output', String(md.min))
+        }
+      }),
+      { global: { plugins: [VueResponsiveness] } }
+    )
+
+    expect(wrapper.text()).toBe('true')
+    mediaQueries.update({ width: 500 })
+    await nextTick()
+    expect(wrapper.text()).toBe('false')
+  })
+
+  it('unmounts one app without stopping updates in another', async () => {
+    const first = render()
+    const listenersPerApp = mediaQueries.listenerCount
+    const second = render()
+    expect(mediaQueries.listenerCount).toBe(listenersPerApp * 2)
+
+    first.unmount()
+    expect(mediaQueries.listenerCount).toBe(listenersPerApp)
+    mediaQueries.update({ width: 500, colorScheme: 'dark' })
+    await nextTick()
+    expect(second.attributes('data-current')).toBe('xs')
+    expect(JSON.parse(second.text()).prefers.colorScheme).toBe('dark')
+
+    second.unmount()
+    expect(mediaQueries.listenerCount).toBe(0)
+  })
+
+  it('resolves each server-rendered app independently', async () => {
+    vi.stubGlobal('window', undefined)
+    const first = createSSRApp(Consumer).use(VueResponsiveness, {
+      md: 0,
+      wide: 1000
+    })
+    const second = createSSRApp(Consumer).use(VueResponsiveness, {
+      compact: 0,
+      large: 900
+    })
+    const [firstHtml, secondHtml] = await Promise.all([
+      renderToString(first),
+      renderToString(second)
+    ])
+
+    expect(firstHtml).toContain('&quot;md&quot;')
+    expect(firstHtml).not.toContain('&quot;compact&quot;')
+    expect(secondHtml).toContain('&quot;compact&quot;')
+    expect(secondHtml).not.toContain('&quot;md&quot;')
+    expect(mediaQueries.matchMedia).not.toHaveBeenCalled()
+  })
+
+  it("reports a missing plugin instead of returning another app's state", () => {
+    render()
+    const wrapper = mount(
+      defineComponent({
+        setup() {
+          try {
+            useMatches()
+            return () => h('output', 'unexpected state')
+          } catch (error) {
+            return () => h('output', (error as Error).message)
+          }
+        }
+      })
+    )
+    expect(wrapper.text()).toBe(
+      'Install VueResponsiveness before calling useMatches().'
+    )
+  })
+
+  it('reports calls outside Vue setup', () => {
+    expect(() => useMatches()).toThrow(
+      'useMatches() must be called during Vue setup().'
+    )
   })
 })
