@@ -37,7 +37,9 @@ Use the package manager your project already uses.
 
 ### Demo
 
-[Codesandbox](https://codesandbox.io/p/devbox/nxqvcr)
+[Open the live demo](https://codemonk-digital.github.io/vue-responsiveness/) and resize your browser to see the responsive state change. No account or setup is required.
+
+[View the example source](https://github.com/codemonk-digital/vue-responsiveness/blob/main/src/App.vue).
 
 ### 1. Register the plugin
 
@@ -280,11 +282,13 @@ describe('<MyComponent />', () => {
 
 ## Development checks
 
-Run `pnpm verify` before committing. It runs lint, typechecks the app/library, tests, and tooling configurations, builds the package, checks its published entry points, and runs the tests with library coverage enforcement. CI runs the same command after a frozen-lockfile install.
+Run `pnpm verify` before committing. It runs lint, typechecks the app/library, tests, and tooling configurations, builds the package, checks its published entry points, runs the tests with library coverage enforcement, and builds the demo. CI runs the same command after a frozen-lockfile install.
 
 For a focused check, use `pnpm typecheck`, `pnpm lint`, or `pnpm coverage`. Test cases live in `lib/**/*.test.ts` or `test/**/*.test.ts`; the test adapter models viewport and preference changes independently of the demo.
 
 After a build, `pnpm check:package` checks the emitted declarations with both NodeNext and bundler resolution, and exercises the ES module and CommonJS entry points. The library declaration configuration is `tsconfig.lib.json`; published source files exclude tests and snapshots.
+
+To preview the deployed demo locally, run `pnpm build:demo` followed by `pnpm preview:demo`, then open the `/vue-responsiveness/` URL printed by Vite. See [demo hosting](docs/demo.md) for GitHub Pages setup and deployment details.
 
 ## How it works
 
