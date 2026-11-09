@@ -140,7 +140,9 @@ createApp(App)
 
 Available presets:
 
-`Ant_Design`, `Bootstrap_3`, `Bootstrap_4`, `Bootstrap_5`, `Bulma`, `Chakra`, `Foundation`, `Ionic`, `Master_CSS`, `Material_Design`, `Materialize`, `Material_UI`, `Quasar`, `Semantic_UI`, `Skeleton`, `Tailwind_CSS`, `Vuetify`, `Windi_CSS`
+`Ant_Design`, `Bootstrap_3`, `Bootstrap_4`, `Bootstrap_5`, `Bulma`, `Chakra`, `Foundation`, `Ionic`, `Master_CSS`, `Material_Design`, `Materialize`, `Material_UI`, `Quasar`, `Semantic_UI`, `Skeleton`, `Tailwind_CSS`, `Vuetify`, `Vuetify_3`, `Windi_CSS`
+
+See [preset versions and sources](docs/presets.md) for the supported scales, aliases, and unit assumptions. `Vuetify` preserves its existing five-tier scale; choose `Vuetify_3` to include the `xxl` interval at 2560px. Chakra v2's `2xl` minimum is 1536px, and Materialize 1.0 uses minima of 601/993/1201px.
 
 `Bootstrap_3` follows the [Bootstrap 3.4 grid](https://getbootstrap.com/docs/3.4/css/#grid-media-queries): `sm: 768`, `md: 992`, `lg: 1200`. `Material_UI` retains the [Material UI v4 defaults](https://v4.mui.com/customization/breakpoints/), including `lg: 1280`; it does not automatically track later framework versions. These correct the earlier Bootstrap 3 values and Material UI's `1260px` large threshold. Apps overriding framework defaults should pass their own breakpoint object.
 

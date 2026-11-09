@@ -3,7 +3,8 @@
   "private": false,
   "files": [
     "dist",
-    "lib"
+    "lib",
+    "docs"
   ],
   "types": "./dist/index.d.ts",
   "main": "./dist/vue-responsiveness.umd.cjs",
