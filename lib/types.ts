@@ -1,5 +1,10 @@
 export type VueResponsivenessBreakpoints = Record<string, number | null>
 
+export type VueResponsivenessOptions = {
+  /** Keep the server fallback state until the root has mounted. */
+  ssr?: boolean
+}
+
 export type VueResponsivenessMatches = Record<
   string,
   { min: boolean; max: boolean; only: boolean }

@@ -10,6 +10,7 @@ import {
 const breakpoints: VueResponsivenessBreakpoints = { phone: 0, wide: 900 }
 createApp({}).use(VueResponsiveness, breakpoints)
 createApp({}).use(VueResponsiveness, Presets.Bootstrap_5)
+createApp({}).use(VueResponsiveness, breakpoints, { ssr: true })
 
 // Existing consumers can continue to use arbitrary custom names.
 export function readCustomBreakpoint() {
