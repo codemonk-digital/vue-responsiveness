@@ -1,5 +1,8 @@
 import pluginVitest from '@vitest/eslint-plugin'
-import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
+import {
+  defineConfigWithVueTs,
+  vueTsConfigs
+} from '@vue/eslint-config-typescript'
 import { globalIgnores } from 'eslint/config'
 import skipFormatting from 'eslint-config-prettier/flat'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
@@ -11,7 +14,12 @@ export default defineConfigWithVueTs(
     files: ['**/*.{ts,mts,tsx,vue}']
   },
 
-  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
+  globalIgnores([
+    '**/dist/**',
+    '**/dist-demo/**',
+    '**/dist-ssr/**',
+    '**/coverage/**'
+  ]),
 
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,

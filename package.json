@@ -60,11 +60,13 @@
   "scripts": {
     "dev": "vite",
     "build": "pnpm typecheck && vite build",
+    "build:demo": "vite build --config vite.demo.config.ts",
     "typecheck": "vue-tsc --build",
-    "verify": "pnpm lint && pnpm build && pnpm check:package && pnpm coverage",
+    "verify": "pnpm lint && pnpm build && pnpm check:package && pnpm coverage && pnpm build:demo",
     "check:package": "tsc -p test/consumer/tsconfig.json && tsc -p test/consumer/tsconfig.bundler.json && node scripts/check-package.mjs",
     "prepack": "npm run build",
     "preview": "vite preview",
+    "preview:demo": "vite preview --config vite.demo.config.ts",
     "lint": "eslint . --ext ts,tsx,js,jsx,cjs,mjs",
     "test": "vitest",
     "coverage": "vitest run --coverage"
