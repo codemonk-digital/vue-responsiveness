@@ -5,19 +5,17 @@ export type VueResponsivenessOptions = {
   ssr?: boolean
 }
 
-export type VueResponsivenessMatches = Record<
-  string,
-  { min: boolean; max: boolean; only: boolean }
-> & {
-  current: string
-  isMin(interval: string): boolean
-  isMax(interval: string): boolean
-  isOnly(interval: string): boolean
-  orientation: 'portrait' | 'landscape'
-  hover: 'none' | 'hover'
-  prefers: {
-    colorScheme: 'dark' | 'light'
-    contrast: 'more' | 'less' | 'custom' | 'no-preference'
-    reducedMotion: 'reduce' | 'no-preference'
+export type VueResponsivenessMatches<Breakpoint extends string = string> =
+  Record<Breakpoint, { min: boolean; max: boolean; only: boolean }> & {
+    current: Breakpoint | ''
+    isMin(interval: Breakpoint): boolean
+    isMax(interval: Breakpoint): boolean
+    isOnly(interval: Breakpoint): boolean
+    orientation: 'portrait' | 'landscape'
+    hover: 'none' | 'hover'
+    prefers: {
+      colorScheme: 'dark' | 'light'
+      contrast: 'more' | 'less' | 'custom' | 'no-preference'
+      reducedMotion: 'reduce' | 'no-preference'
+    }
   }
-}

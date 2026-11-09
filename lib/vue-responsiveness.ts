@@ -188,7 +188,9 @@ export const VueResponsiveness = {
   }
 }
 
-export const useMatches = (): VueResponsivenessMatches => {
+export const useMatches = <
+  Breakpoint extends string = string
+>(): VueResponsivenessMatches<Breakpoint> => {
   if (!getCurrentInstance()) {
     throw new Error('useMatches() must be called during Vue setup().')
   }
@@ -197,5 +199,5 @@ export const useMatches = (): VueResponsivenessMatches => {
   if (!matches) {
     throw new Error('Install VueResponsiveness before calling useMatches().')
   }
-  return matches
+  return matches as VueResponsivenessMatches<Breakpoint>
 }
