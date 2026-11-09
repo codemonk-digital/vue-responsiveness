@@ -1,27 +1,15 @@
 import type { VueResponsivenessBreakpoints } from './types.js'
 
-export type PresetName =
-  | 'Ant_Design'
-  | 'Bootstrap_3'
-  | 'Bootstrap_4'
-  | 'Bootstrap_5'
-  | 'Bulma'
-  | 'Chakra'
-  | 'Foundation'
-  | 'Ionic'
-  | 'Master_CSS'
-  | 'Material_Design'
-  | 'Materialize'
-  | 'Material_UI'
-  | 'Quasar'
-  | 'Semantic_UI'
-  | 'Skeleton'
-  | 'Tailwind_CSS'
-  | 'Vuetify'
-  | 'Vuetify_3'
-  | 'Windi_CSS'
+// Infer preset names while keeping breakpoint values open to customization.
+function definePresets<Name extends string>(
+  presets: Record<Name, VueResponsivenessBreakpoints>
+): Record<Name, VueResponsivenessBreakpoints> {
+  return presets
+}
 
-export const Presets: Record<PresetName, VueResponsivenessBreakpoints> = {
+export type PresetName = keyof typeof Presets
+
+export const Presets = definePresets({
   Ant_Design: {
     xs: 0,
     sm: 576,
@@ -169,4 +157,4 @@ export const Presets: Record<PresetName, VueResponsivenessBreakpoints> = {
     xl: 1280,
     '2xl': 1536
   }
-}
+})
