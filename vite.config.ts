@@ -1,7 +1,7 @@
-import { defineConfig, type UserConfigExport } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import dts from 'unplugin-dts/vite'
+import { defineConfig, type UserConfigExport } from 'vite'
 
 const config: UserConfigExport = {
   plugins: [

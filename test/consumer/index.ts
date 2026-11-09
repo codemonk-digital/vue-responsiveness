@@ -1,8 +1,8 @@
 import { createApp } from 'vue'
 import {
   Presets,
-  VueResponsiveness,
   useMatches,
+  VueResponsiveness,
   type VueResponsivenessBreakpoints,
   type VueResponsivenessMatches
 } from 'vue-responsiveness'

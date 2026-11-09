@@ -1,10 +1,11 @@
-import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
 import { createSSRApp, defineComponent, h, nextTick } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { VueResponsiveness, useMatches } from './vue-responsiveness'
-import type { VueResponsivenessBreakpoints } from './types'
+
 import { mediaQueries } from '../test/setup'
+import type { VueResponsivenessBreakpoints } from './types'
+import { useMatches, VueResponsiveness } from './vue-responsiveness'
 
 const Consumer = defineComponent({
   setup() {

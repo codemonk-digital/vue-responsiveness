@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+
 import { createMediaQueries } from './media-queries'
 
 describe('media-query test adapter', () => {
