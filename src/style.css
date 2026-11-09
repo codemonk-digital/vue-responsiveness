@@ -1,4 +1,6 @@
 :root {
+  --demo-accent-color: #bada55;
+
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -25,10 +27,11 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
-  color: #fff6
+  color: #fff6;
 }
-h1 span, code {
-  color: #bada55;
+h1 span,
+code {
+  color: var(--demo-accent-color);
 }
 code {
   font-size: 2rem;
@@ -41,7 +44,11 @@ code {
 
 @media (prefers-color-scheme: light) {
   :root {
+    --demo-accent-color: #527000;
     color: #213547;
     background-color: #fff;
+  }
+  h1 {
+    color: #0007;
   }
 }
