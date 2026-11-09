@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import {
+  type PresetName,
   Presets,
   useMatches,
   VueResponsiveness,
@@ -11,6 +12,20 @@ const breakpoints: VueResponsivenessBreakpoints = { phone: 0, wide: 900 }
 createApp({}).use(VueResponsiveness, breakpoints)
 createApp({}).use(VueResponsiveness, Presets.Bootstrap_5)
 createApp({}).use(VueResponsiveness, breakpoints, { ssr: true })
+
+// Inferring preset names must preserve existing customization of their values.
+export function customizePreset(name: PresetName, breakpoint: string) {
+  Presets[name][breakpoint] = null
+  Presets[name].custom = 1234
+  delete Presets[name].md
+  Presets[name] = { phone: null, wide: 900 }
+  const width: number | null = Presets[name][breakpoint]
+  // @ts-expect-error Preset names remain a finite union.
+  void Presets.Bootstrap_6
+  // @ts-expect-error Breakpoint widths still require numbers or null.
+  Presets[name][breakpoint] = '900'
+  return width
+}
 
 // Existing consumers can continue to use arbitrary custom names.
 export function readCustomBreakpoint() {

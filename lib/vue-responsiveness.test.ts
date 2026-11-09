@@ -179,6 +179,25 @@ describe('responsive state', () => {
     expect(wrapper.attributes('data-current')).toBe('medium')
   })
 
+  it('samples every media preference when installing the plugin', () => {
+    mediaQueries.update({
+      hover: 'none',
+      orientation: 'portrait',
+      colorScheme: 'dark',
+      contrast: 'custom',
+      reducedMotion: 'reduce'
+    })
+    expect(JSON.parse(render().text())).toMatchObject({
+      hover: 'none',
+      orientation: 'portrait',
+      prefers: {
+        colorScheme: 'dark',
+        contrast: 'custom',
+        reducedMotion: 'reduce'
+      }
+    })
+  })
+
   it('updates all supported media preferences in rendered output', async () => {
     const wrapper = render()
     const initial = JSON.parse(wrapper.text())
