@@ -16,7 +16,19 @@ describe('framework preset compatibility', () => {
     ['Material_UI', 1259.99, 'md'],
     ['Material_UI', 1260, 'md'],
     ['Material_UI', 1279.99, 'md'],
-    ['Material_UI', 1280, 'lg']
+    ['Material_UI', 1280, 'lg'],
+    ['Chakra', 1472, 'xl'],
+    ['Chakra', 1535.99, 'xl'],
+    ['Chakra', 1536, '2xl'],
+    ['Materialize', 600, 's'],
+    ['Materialize', 601, 'm'],
+    ['Materialize', 992, 'm'],
+    ['Materialize', 993, 'l'],
+    ['Materialize', 1200, 'l'],
+    ['Materialize', 1201, 'xl'],
+    ['Vuetify', 2560, 'xl'],
+    ['Vuetify_3', 2559.99, 'xl'],
+    ['Vuetify_3', 2560, 'xxl']
   ])('%s matches %s px as %s', (preset, width, expected) => {
     mediaQueries.update({ width })
     const wrapper = mount(
