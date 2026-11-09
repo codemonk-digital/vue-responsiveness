@@ -1,6 +1,7 @@
 import type {
   VueResponsivenessBreakpoints,
-  VueResponsivenessMatches
+  VueResponsivenessMatches,
+  VueResponsivenessOptions
 } from './types.js'
 import type { App, InjectionKey } from 'vue'
 import { Presets } from './presets.js'
@@ -55,7 +56,8 @@ function normalizeBreakpoints(breakpoints: VueResponsivenessBreakpoints) {
 export const VueResponsiveness = {
   install(
     app: App,
-    breakpoints: VueResponsivenessBreakpoints = Presets.Bootstrap_5
+    breakpoints: VueResponsivenessBreakpoints = Presets.Bootstrap_5,
+    options: VueResponsivenessOptions = {}
   ): void {
     const intervals = normalizeBreakpoints(breakpoints)
     const widths = [...new Set(intervals.map(([, min]) => min))]
@@ -96,7 +98,8 @@ export const VueResponsiveness = {
       }, {} as Partial<VueResponsivenessMatches>)
     }) as VueResponsivenessMatches
 
-    if (typeof window !== 'undefined') {
+    const connect = () => {
+      if (typeof window === 'undefined' || cleanedUp) return
       const queryLists = widths.map((min) =>
         window.matchMedia(`(min-width: ${min}px)`)
       )
@@ -168,6 +171,16 @@ export const VueResponsiveness = {
           updateMatches(mediaQuery)
         })
       })
+    }
+
+    if (options.ssr) {
+      app.mixin({
+        mounted() {
+          if (this === this.$root) connect()
+        }
+      })
+    } else {
+      connect()
     }
 
     app.provide(matchesKey, matches)

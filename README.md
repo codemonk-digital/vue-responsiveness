@@ -228,6 +228,20 @@ These values mirror common CSS media queries, but are available directly in Vue.
 | `prefers.colorScheme`   | `'light' \| 'dark'` | User preference for color scheme | `@media (prefers-color-scheme: *)` |
 | `prefers.contrast`      | `'no-preference' \| 'more' \| 'less' \| 'custom'` | User preference for contrast | `@media (prefers-contrast: *)` |
 
+## Server rendering and hydration
+
+The plugin can be installed on the server without accessing `window`. Existing client installations sample media queries immediately.
+
+For apps that render responsive branches on the server, enable SSR mode in the shared server/client app setup:
+
+```ts
+app.use(VueResponsiveness, Presets.Bootstrap_5, { ssr: true })
+```
+
+Pass `undefined` instead of a preset to use the default breakpoints.
+
+In SSR mode, the server and initial client render use the same fallback: all breakpoint flags are false, `current` is empty, orientation is landscape, hover is available, color scheme is light, and contrast/motion preferences are `no-preference`. The client samples media queries and attaches listeners after the root mounts. Reactive consumers then update on Vue's next render tick. Use this mode consistently on both server and client; it prevents hydration mismatches but may change the layout after mounting.
+
 ## Testing
 
 When testing a component that uses `$matches`, install the plugin through Vue Test Utils `global.plugins`.
