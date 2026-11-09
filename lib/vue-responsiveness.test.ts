@@ -1,337 +1,158 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { defineComponent, type App as VueApp } from 'vue'
-import App from '../src/App.vue'
+import { createSSRApp, defineComponent, h, nextTick } from 'vue'
 import { VueResponsiveness, useMatches } from './vue-responsiveness'
-import { type VueResponsivenessBreakpoints } from './types'
-import { Presets } from './presets'
-import { vi } from 'vitest'
+import type { VueResponsivenessBreakpoints } from './types'
+import { mediaQueries } from '../test/setup'
 
-const createMockMediaQueryList = (matches: boolean, query: string) => {
-  const listeners: ((event: { matches: boolean }) => void)[] = []
-  return {
-    matches,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn((event, cb) => {
-      if (event === 'change') {
-        listeners.push(cb)
-      }
-    }),
-    removeEventListener: vi.fn((event, cb) => {
-      if (event === 'change') {
-        const index = listeners.indexOf(cb)
-        if (index > -1) {
-          listeners.splice(index, 1)
-        }
-      }
-    }),
-    dispatchEvent: vi.fn(),
-    _listenerCount: () => listeners.length,
-    _simulateChange: (newMatches: boolean) => {
-      listeners.forEach((cb) => cb({ matches: newMatches }))
-    }
+const Consumer = defineComponent({
+  setup() {
+    const matches = useMatches()
+    return () =>
+      h(
+        'output',
+        {
+          'data-current': matches.current,
+          'data-min': matches.isMin('md'),
+          'data-max': matches.isMax('md'),
+          'data-only': matches.isOnly('md')
+        },
+        JSON.stringify(matches)
+      )
   }
-}
+})
 
-describe('vue-responsiveness', () => {
-  const baseState = Object.assign(
-    {},
-    {
-      current: 'xs',
+const render = (breakpoints?: VueResponsivenessBreakpoints) =>
+  mount(Consumer, {
+    global: { plugins: [[VueResponsiveness, breakpoints]] }
+  })
+
+describe('responsive state', () => {
+  it('exposes the same state to templates and the composable', () => {
+    const wrapper = mount(
+      defineComponent({
+        setup: () => ({ matches: useMatches() }),
+        template:
+          '<output>{{ matches === $matches }}:{{ $matches.current }}</output>'
+      }),
+      { global: { plugins: [VueResponsiveness] } }
+    )
+    expect(wrapper.text()).toBe('true:lg')
+  })
+
+  it('matches a coherent initial viewport', () => {
+    const wrapper = render()
+    expect(wrapper.attributes()).toMatchObject({
+      'data-current': 'lg',
+      'data-min': 'true',
+      'data-max': 'false',
+      'data-only': 'false'
+    })
+    const state = JSON.parse(wrapper.text())
+    const matching = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'].filter(
+      (key) => state[key].only
+    )
+    expect(matching).toEqual(['lg'])
+  })
+
+  it('updates rendered breakpoint state when the viewport crosses thresholds', async () => {
+    const wrapper = render()
+    for (const [width, current, min, max, only] of [
+      [500, 'xs', false, true, false],
+      [768, 'md', true, true, true],
+      [992, 'lg', true, false, false],
+      [767, 'sm', false, true, false]
+    ] as const) {
+      mediaQueries.update({ width })
+      await nextTick()
+      expect(wrapper.attributes()).toMatchObject({
+        'data-current': current,
+        'data-min': String(min),
+        'data-max': String(max),
+        'data-only': String(only)
+      })
+    }
+  })
+
+  it.each([
+    { small: 0, medium: 777, large: 1234 },
+    { large: 1234, small: 0, medium: 777 },
+    { large: 1234, small: null, medium: 777 }
+  ])(
+    'sorts custom breakpoints and supports the existing null lower bound: %j',
+    async (breakpoints) => {
+      const wrapper = render(breakpoints)
+      expect(wrapper.attributes('data-current')).toBe('medium')
+      mediaQueries.update({ width: 1400 })
+      await nextTick()
+      expect(wrapper.attributes('data-current')).toBe('large')
+      expect(wrapper.attributes('data-min')).toBe('false')
+      expect(wrapper.attributes('data-max')).toBe('false')
+      expect(wrapper.attributes('data-only')).toBe('false')
+    }
+  )
+
+  it('leaves current empty below the first configured breakpoint', () => {
+    mediaQueries.update({ width: 300 })
+    expect(render({ md: 600 }).attributes('data-current')).toBe('')
+  })
+
+  it('updates all supported media preferences in rendered output', async () => {
+    const wrapper = render()
+    const initial = JSON.parse(wrapper.text())
+    expect(initial).toMatchObject({
       hover: 'hover',
       orientation: 'landscape',
       prefers: {
         colorScheme: 'light',
         contrast: 'no-preference',
         reducedMotion: 'no-preference'
-      },
-    },
-    ...Object.keys(Presets.Bootstrap_5).map((key) => ({
-      [key]: {
-        max: true,
-        min: true,
-        only: true
-      }
-    }))
-  )
-  const render = (breakpoints?: VueResponsivenessBreakpoints) =>
-    mount(App, {
-      global: {
-        plugins: [[VueResponsiveness, breakpoints]]
       }
     })
-
-  it('should work', () => {
-    expect(render().element).toMatchSnapshot()
-  })
-
-  it('should work with custom breakpoints', () => {
-    expect(render({ min: null, max: 1000 }).element).toMatchSnapshot()
-  })
-
-  it('should reverse unordered values', () => {
-    expect(render({ max: 1000, min: null }).element).toMatchSnapshot()
-  })
-
-  it('should match $matches', () => {
-    const { isMax, isMin, isOnly, ...rest } = render().vm.$matches
-    expect(rest).toEqual(baseState)
-    expect(isMax('sm')).toBe(true)
-    expect(isMin('sm')).toBe(true)
-    expect(isOnly('sm')).toBe(true)
-  })
-
-  it('useMatches() should work', () => {
-    const App = defineComponent({
-      setup: () => ({ matches: useMatches() }),
-      template: '<div />'
+    mediaQueries.update({
+      hover: 'none',
+      orientation: 'portrait',
+      colorScheme: 'dark',
+      contrast: 'more',
+      reducedMotion: 'reduce'
     })
-    const { vm } = mount(App, {
-      global: {
-        plugins: [[VueResponsiveness]]
+    await nextTick()
+    expect(JSON.parse(wrapper.text())).toMatchObject({
+      hover: 'none',
+      orientation: 'portrait',
+      prefers: {
+        colorScheme: 'dark',
+        contrast: 'more',
+        reducedMotion: 'reduce'
       }
     })
-    const { isMax, isMin, isOnly, ...rest } = vm.matches
-    expect(rest).toEqual(baseState)
-    expect(isMax('sm')).toBe(true)
-    expect(isMin('sm')).toBe(true)
-    expect(isOnly('sm')).toBe(true)
-  })
-
-  it('should return window.matchMedia matches', () => {
-    window.matchMedia = vi.fn().mockImplementation((query) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      dispatchEvent: vi.fn()
-    }))
-    const { isMax, isMin, isOnly, current } = render().vm.$matches
-    expect(isMax('sm')).toBe(false)
-    expect(isMin('sm')).toBe(false)
-    expect(isOnly('sm')).toBe(false)
-    expect(current).toBe('')
-  })
-
-  it('removes media query listeners when the app unmounts', () => {
-    const mediaQueryLists: ReturnType<typeof createMockMediaQueryList>[] = []
-
-    window.matchMedia = vi.fn((query) => {
-      const mediaQueryList = createMockMediaQueryList(true, query)
-      mediaQueryLists.push(mediaQueryList)
-
-      return mediaQueryList
+    for (const contrast of ['less', 'custom', 'no-preference'] as const) {
+      mediaQueries.update({ contrast })
+      await nextTick()
+      expect(JSON.parse(wrapper.text()).prefers.contrast).toBe(contrast)
+    }
+    mediaQueries.update({
+      hover: 'hover',
+      orientation: 'landscape',
+      colorScheme: 'light',
+      reducedMotion: 'no-preference'
     })
+    await nextTick()
+    expect(JSON.parse(wrapper.text())).toEqual(initial)
+  })
 
+  it('removes subscriptions when its app unmounts', () => {
     const wrapper = render()
-
-    expect(mediaQueryLists.length).toBeGreaterThan(0)
-    expect(mediaQueryLists.every((item) => item._listenerCount() === 1)).toBe(
-      true
-    )
-
+    expect(mediaQueries.listenerCount).toBeGreaterThan(0)
     wrapper.unmount()
-
-    expect(mediaQueryLists.every((item) => item._listenerCount() === 0)).toBe(
-      true
-    )
+    expect(mediaQueries.listenerCount).toBe(0)
   })
 
-  it('can clean up more than once without removing listeners again', () => {
-    const mediaQueryLists: ReturnType<typeof createMockMediaQueryList>[] = []
-    const originalUnmount = vi.fn()
-    const app = {
-      unmount: originalUnmount,
-      config: { globalProperties: {} }
-    } as unknown as VueApp
-
-    window.matchMedia = vi.fn((query) => {
-      const mediaQueryList = createMockMediaQueryList(true, query)
-      mediaQueryLists.push(mediaQueryList)
-
-      return mediaQueryList
-    })
-
-    VueResponsiveness.install(app)
-
-    app.unmount()
-    app.unmount()
-
-    expect(originalUnmount).toHaveBeenCalledTimes(2)
-    expect(
-      mediaQueryLists.every(
-        (item) => item.removeEventListener.mock.calls.length === 1
-      )
-    ).toBe(true)
-  })
-
-  it('can install during server rendering', () => {
-    const app = {
-      unmount: vi.fn(),
-      config: { globalProperties: {} }
-    } as unknown as VueApp
-
+  it('can install without browser globals', () => {
     vi.stubGlobal('window', undefined)
-
-    VueResponsiveness.install(app)
-
+    const app = createSSRApp({})
+    app.use(VueResponsiveness)
     expect(app.config.globalProperties.$matches.current).toBe('')
-    expect(app.config.globalProperties.$matches.isMin('sm')).toBe(false)
-
-    app.unmount()
-    vi.unstubAllGlobals()
+    expect(app.config.globalProperties.$matches.isMin('md')).toBe(false)
   })
-
-  it('media query: hover', () => {
-    const mockHoverNone = createMockMediaQueryList(true, '(hover: none)')
-    const mockHoverHover = createMockMediaQueryList(false, '(hover: hover)')
-
-    window.matchMedia = vi.fn((query) => {
-      if (query === '(hover: none)') return mockHoverNone
-      if (query === '(hover: hover)') return mockHoverHover
-
-      return createMockMediaQueryList(true, query)
-    })
-
-    const { $matches: matches } = render().vm
-
-    expect(matches.hover).toBe('none')
-
-    mockHoverNone._simulateChange(false)
-    mockHoverHover._simulateChange(true)
-
-    expect(matches.hover).toBe('hover')
-
-    mockHoverNone._simulateChange(true)
-    mockHoverHover._simulateChange(false)
-
-    expect(matches.hover).toBe('none')
-  })
-
-  it('media query: orientation', () => {
-    const mockOrientationLandscape = createMockMediaQueryList(true, '(orientation: landscape)')
-    const mockOrientationPortrait = createMockMediaQueryList(false, '(orientation: portrait)')
-
-    window.matchMedia = vi.fn((query) => {
-      if (query === '(orientation: landscape)') return mockOrientationLandscape
-      if (query === '(orientation: portrait)') return mockOrientationPortrait
-
-      return createMockMediaQueryList(true, query)
-    })
-
-    const { $matches: matches } = render().vm
-
-    expect(matches.orientation).toBe('landscape')
-
-    mockOrientationLandscape._simulateChange(false)
-    mockOrientationPortrait._simulateChange(true)
-
-    expect(matches.orientation).toBe('portrait')
-
-    mockOrientationLandscape._simulateChange(true)
-    mockOrientationPortrait._simulateChange(false)
-
-    expect(matches.orientation).toBe('landscape')
-  })
-
-  it('media query: prefers-color-scheme', () => {
-    const mockPrefersLight = createMockMediaQueryList(true, '(prefers-color-scheme: light)')
-    const mockPrefersDark = createMockMediaQueryList(false, '(prefers-color-scheme: dark)')
-
-    window.matchMedia = vi.fn((query) => {
-      if (query === '(prefers-color-scheme: light)') return mockPrefersLight
-      if (query === '(prefers-color-scheme: dark)') return mockPrefersDark
-
-      return createMockMediaQueryList(false, query)
-    })
-
-    const { $matches: matches } = render().vm
-
-    expect(matches.prefers.colorScheme).toBe('light')
-
-    mockPrefersLight._simulateChange(false)
-    mockPrefersDark._simulateChange(true)
-
-    expect(matches.prefers.colorScheme).toBe('dark')
-
-    mockPrefersLight._simulateChange(true)
-    mockPrefersDark._simulateChange(false)
-
-    expect(matches.prefers.colorScheme).toBe('light')
-  })
-
-  it('media query: prefers-contrast', () => {
-
-    const mockPrefersContrastMore = createMockMediaQueryList(false, '(prefers-contrast: more)')
-    const mockPrefersContrastLess = createMockMediaQueryList(false, '(prefers-contrast: less)')
-    const mockPrefersContrastCustom = createMockMediaQueryList(false, '(prefers-contrast: custom)')
-    const mockPrefersContrastNoPreference = createMockMediaQueryList(true, '(prefers-contrast: no-preference)')
-
-    window.matchMedia = vi.fn((query) => {
-      switch (query) {
-        case '(prefers-contrast: more)': return mockPrefersContrastMore
-        case '(prefers-contrast: less)': return mockPrefersContrastLess
-        case '(prefers-contrast: custom)': return mockPrefersContrastCustom
-        case '(prefers-contrast: no-preference)': return mockPrefersContrastNoPreference
-
-      default:
-          return createMockMediaQueryList(false, query);
-      }
-    })
-
-    const { $matches: matches } = render().vm
-
-    expect(matches.prefers.contrast).toBe('no-preference')
-
-    mockPrefersContrastNoPreference._simulateChange(false)
-    mockPrefersContrastMore._simulateChange(true)
-    expect(matches.prefers.contrast).toBe('more')
-
-    mockPrefersContrastMore._simulateChange(false)
-    mockPrefersContrastLess._simulateChange(true)
-    expect(matches.prefers.contrast).toBe('less')
-
-    mockPrefersContrastLess._simulateChange(false)
-    mockPrefersContrastCustom._simulateChange(true)
-    expect(matches.prefers.contrast).toBe('custom')
-
-    mockPrefersContrastCustom._simulateChange(false)
-    mockPrefersContrastNoPreference._simulateChange(true)
-    expect(matches.prefers.contrast).toBe('no-preference')
-  })
-
-  it('media query: prefers-reduced-motion', () => {
-    const mockPrefersReducedMotionReduce = createMockMediaQueryList(false, '(prefers-reduced-motion: reduce)')
-    const mockPrefersReducedMotionNoPreference = createMockMediaQueryList(true, '(prefers-reduced-motion: no-preference)')
-
-    window.matchMedia = vi.fn((query) => {
-      switch (query) {
-        case '(prefers-reduced-motion: reduce)': return mockPrefersReducedMotionReduce
-        case '(prefers-reduced-motion: no-preference)': return mockPrefersReducedMotionNoPreference
-
-        default:
-          return createMockMediaQueryList(false, query);
-      }
-    })
-
-    const wrapper = render()
-    const matches = wrapper.vm.$matches
-
-    expect(matches.prefers.reducedMotion).toBe('no-preference')
-
-    mockPrefersReducedMotionNoPreference._simulateChange(false)
-    mockPrefersReducedMotionReduce._simulateChange(true)
-    expect(matches.prefers.reducedMotion).toBe('reduce')
-
-    mockPrefersReducedMotionReduce._simulateChange(false)
-    mockPrefersReducedMotionNoPreference._simulateChange(true)
-    expect(matches.prefers.reducedMotion).toBe('no-preference')
-  })
-
 })

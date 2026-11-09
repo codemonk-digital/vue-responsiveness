@@ -1,15 +1,13 @@
-import { vi } from 'vitest'
+import { afterEach, beforeEach, vi } from 'vitest'
+import { enableAutoUnmount } from '@vue/test-utils'
+import { createMediaQueries } from './media-queries'
 
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: true,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(), // deprecated
-    removeListener: vi.fn(), // deprecated
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn()
-  }))
+export let mediaQueries: ReturnType<typeof createMediaQueries>
+
+beforeEach(() => {
+  mediaQueries = createMediaQueries()
+  vi.stubGlobal('matchMedia', mediaQueries.matchMedia)
 })
+
+enableAutoUnmount(afterEach)
+afterEach(() => vi.unstubAllGlobals())
