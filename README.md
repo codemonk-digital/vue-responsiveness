@@ -7,7 +7,6 @@ A tiny, performant, and intuitive Vue 3 plugin for working with responsive break
 [![License](https://img.shields.io/npm/l/vue-responsiveness.svg?style=flat-square&color=f9d342)](https://github.com/codemonk-digital/vue-responsiveness/blob/main/LICENSE)
 ![Dependencies](https://img.shields.io/badge/dependencies-0-f9d342.svg?style=flat-square)
 [![Minzip size](https://img.shields.io/bundlephobia/minzip/vue-responsiveness.svg?style=flat-square&color=f9d342)](https://bundlephobia.com/package/vue-responsiveness)
-[![UMD gzip size](https://img.shields.io/badge/umd%3Agzip-1.41%20kB-f9d342.svg?style=flat-square)](https://unpkg.com/vue-responsiveness)
 ![Coverage](https://img.shields.io/badge/coverage-100%25-f9d342.svg?style=flat-square)
 ![SSR compatibility](https://img.shields.io/badge/SSR-ready-f9d342.svg?style=flat-square)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-f9d342.svg?style=flat-square)](https://makeapullrequest.com)
@@ -227,6 +226,21 @@ These values mirror common CSS media queries, but are available directly in Vue.
 | `prefers.reducedMotion` | `'no-preference' \| 'reduce'` | User preference for reduced motion | `@media (prefers-reduced-motion: *)` |
 | `prefers.colorScheme`   | `'light' \| 'dark'` | User preference for color scheme | `@media (prefers-color-scheme: *)` |
 | `prefers.contrast`      | `'no-preference' \| 'more' \| 'less' \| 'custom'` | User preference for contrast | `@media (prefers-contrast: *)` |
+
+### Optional breakpoint name checking
+
+Existing TypeScript usage remains permissive: `useMatches()` and `$matches` continue accepting arbitrary custom names. To catch misspellings in a composable consumer, explicitly supply the names from the configuration installed in that app:
+
+```ts
+const breakpoints = { phone: 0, wide: 900 }
+// Install this configuration when creating the app.
+const matches = useMatches<keyof typeof breakpoints>()
+matches.phone.only
+matches.isMin('wide')
+// matches.phoen.only would be a TypeScript error.
+```
+
+`VueResponsivenessMatches<'phone' | 'wide'>` provides the same opt-in typing. This annotation does not register or verify runtime configuration; use the same names passed to the plugin. The global `$matches` type remains compatible with existing custom-breakpoint templates.
 
 ## Server rendering and hydration
 
