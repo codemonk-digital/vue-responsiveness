@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createSSRApp, defineComponent, h, nextTick } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { VueResponsiveness, useMatches } from './vue-responsiveness'
+
 import { mediaQueries } from '../test/setup'
+import { useMatches, VueResponsiveness } from './vue-responsiveness'
 
 const View = defineComponent({
   setup() {

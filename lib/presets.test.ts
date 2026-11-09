@@ -1,8 +1,9 @@
-import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { Presets, type PresetName } from './presets'
-import { VueResponsiveness } from './vue-responsiveness'
+import { describe, expect, it } from 'vitest'
+
 import { mediaQueries } from '../test/setup'
+import { type PresetName, Presets } from './presets'
+import { VueResponsiveness } from './vue-responsiveness'
 
 describe('framework preset compatibility', () => {
   it.each<[PresetName, number, string]>([

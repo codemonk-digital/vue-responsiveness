@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { stdout } from 'node:process'
+
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 

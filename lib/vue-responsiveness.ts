@@ -1,11 +1,12 @@
+import type { App, InjectionKey } from 'vue'
+import { computed, getCurrentInstance, inject, reactive } from 'vue'
+
+import { Presets } from './presets.js'
 import type {
   VueResponsivenessBreakpoints,
   VueResponsivenessMatches,
   VueResponsivenessOptions
 } from './types.js'
-import type { App, InjectionKey } from 'vue'
-import { Presets } from './presets.js'
-import { reactive, computed, getCurrentInstance, inject } from 'vue'
 
 type Orientation = 'portrait' | 'landscape'
 type Hover = 'none' | 'hover'
