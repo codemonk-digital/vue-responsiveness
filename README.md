@@ -1,6 +1,8 @@
 # Vue Responsiveness
 
-A tiny, performant, and intuitive Vue 3 plugin for working with responsive breakpoints and media queries at runtime.
+Reactive breakpoint and media preference state for Vue 3, powered by the browser's native `matchMedia` API.
+
+[Try the live demo](https://codemonk-digital.github.io/vue-responsiveness/) · [View the example source](https://github.com/codemonk-digital/vue-responsiveness/blob/main/src/App.vue)
 
 [![Total downloads](https://img.shields.io/npm/dt/vue-responsiveness.svg?style=flat-square&color=f9d342)](https://www.npmjs.com/package/vue-responsiveness)
 [![Latest release](https://img.shields.io/npm/v/vue-responsiveness.svg?style=flat-square&color=f9d342)](https://www.npmjs.com/package/vue-responsiveness)
@@ -35,12 +37,6 @@ Use the package manager your project already uses.
 
 ## Quick start
 
-### Demo
-
-[Open the live demo](https://codemonk-digital.github.io/vue-responsiveness/) and resize your browser to see the responsive state change. No account or setup is required.
-
-[View the example source](https://github.com/codemonk-digital/vue-responsiveness/blob/main/src/App.vue).
-
 ### 1. Register the plugin
 
 In `main.ts`:
@@ -60,7 +56,7 @@ For other frameworks (Tailwind CSS, Vuetify, etc.), or your own intervals, see [
 
 ### 2. Choose how to read responsive state
 
-You can use either option below, or mix them in the same app. Use `$matches` for simple template conditions and `useMatches()` when you need responsive state in `<script setup>`.
+Install with `.use(VueResponsiveness)` once for each Vue app. Templates can read `$matches` directly; JavaScript can call `useMatches()` inside a component's `setup()` or `<script setup>` to get that app's responsive state. Calling `useMatches()` outside setup throws because there is no current component to identify the app.
 
 #### Option A: use `$matches` in templates
 
@@ -163,9 +159,7 @@ Presets.Bootstrap_5 = {
 
 </details>
 
-Vue Responsiveness is designed to have one app-wide breakpoint configuration. Register the plugin once, close to `createApp()`, so all components read from the same `$matches` object.
-
-Separate Vue apps, including server-rendered apps, have independent state and listeners. Unmounting one app removes only its listeners. Each breakpoint status object keeps its identity as the viewport changes, so retaining `const md = matches.md` preserves reactivity.
+Each Vue app has one breakpoint configuration and one responsive state object shared by its components. Separate apps, including server-rendered apps, have independent state and media listeners. Unmounting an app removes only its listeners. Breakpoint status objects keep their identity as the viewport changes, so retaining `const md = matches.md` preserves reactivity.
 
 ### Define custom breakpoints
 
@@ -248,13 +242,17 @@ matches.isMin('wide')
 
 The plugin can be installed on the server without accessing `window`. Existing client installations sample media queries immediately.
 
-For apps that render responsive branches on the server, enable SSR mode in the shared server/client app setup:
+For apps that render responsive branches on the server, enable SSR mode in the same server/client app setup:
 
 ```ts
 app.use(VueResponsiveness, Presets.Bootstrap_5, { ssr: true })
 ```
 
-Pass `undefined` instead of a preset to use the default breakpoints.
+Pass `undefined` instead of a preset to use the default Bootstrap 5 breakpoints:
+
+```ts
+app.use(VueResponsiveness, undefined, { ssr: true })
+```
 
 In SSR mode, the server and initial client render use the same fallback: all breakpoint flags are false, `current` is empty, orientation is landscape, hover is available, color scheme is light, and contrast/motion preferences are `no-preference`. The client samples media queries and attaches listeners after the root mounts. Reactive consumers then update on Vue's next render tick. Use this mode consistently on both server and client; it prevents hydration mismatches but may change the layout after mounting.
 
