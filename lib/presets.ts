@@ -29,10 +29,12 @@ export const Presets: Record<PresetName, VueResponsivenessBreakpoints> = {
     xl: 1200,
     xxl: 1600
   },
+  // Bootstrap 3.4: https://getbootstrap.com/docs/3.4/css/#grid-media-queries
   Bootstrap_3: {
     xs: 0,
-    sm: 576,
-    lg: 992
+    sm: 768,
+    md: 992,
+    lg: 1200
   },
   Bootstrap_4: {
     xs: 0,
@@ -103,11 +105,12 @@ export const Presets: Record<PresetName, VueResponsivenessBreakpoints> = {
     l: 992,
     xl: 1200
   },
+  // Material UI v4: https://v4.mui.com/customization/breakpoints/
   Material_UI: {
     xs: 0,
     sm: 600,
     md: 960,
-    lg: 1260,
+    lg: 1280,
     xl: 1920
   },
   Quasar: {
