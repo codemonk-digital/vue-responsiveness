@@ -21,11 +21,47 @@ type QueryConfig =
 const matchesKey: InjectionKey<VueResponsivenessMatches> =
   Symbol('VueResponsiveness')
 
+function normalizeBreakpoints(breakpoints: VueResponsivenessBreakpoints) {
+  const reserved = new Set([
+    'current',
+    'isMin',
+    'isMax',
+    'isOnly',
+    'orientation',
+    'hover',
+    'prefers'
+  ])
+  return Object.entries(breakpoints)
+    .map(([key, value]) => {
+      if (
+        !key.trim() ||
+        reserved.has(key) ||
+        key in Object.prototype ||
+        key.startsWith('__v_')
+      ) {
+        throw new Error(`Breakpoint name "${key}" is reserved or empty.`)
+      }
+      const min = value === null ? 0 : value
+      if (typeof min !== 'number' || !Number.isFinite(min) || min < 0) {
+        throw new Error(
+          `Breakpoint "${key}" must have a finite non-negative number as its minimum width.`
+        )
+      }
+      return [key, min] as const
+    })
+    .sort(([, a], [, b]) => a - b)
+}
+
 export const VueResponsiveness = {
   install(
     app: App,
     breakpoints: VueResponsivenessBreakpoints = Presets.Bootstrap_5
   ): void {
+    const intervals = normalizeBreakpoints(breakpoints)
+    const widths = [...new Set(intervals.map(([, min]) => min))]
+    const indices = intervals.map(
+      ([key, min]) => [key, widths.indexOf(min)] as const
+    )
     const cleanups: (() => void)[] = []
     let cleanedUp = false
     const cleanup = () => {
@@ -40,26 +76,12 @@ export const VueResponsiveness = {
       unmount(...args)
     }
 
-    const intervals = Object.entries(breakpoints)
-      .sort(([, a], [, b]) => Number(a) - Number(b))
-      .reduce(
-        (out, [key, min], i, arr) => {
-          out[key] = {
-            min: min ? `(min-width: ${min}px)` : '',
-            max: arr[i + 1]?.[1]
-              ? `(max-width: ${(arr[i + 1][1] as number) - 0.1}px)`
-              : ''
-          }
-          return out
-        },
-        {} as Record<string, { min: string; max: string }>
-      )
     const matches: VueResponsivenessMatches = reactive({
       isMin: (key: string) => matches[key]?.min || false,
       isMax: (key: string) => matches[key]?.max || false,
       isOnly: (key: string) => matches[key]?.only || false,
       current: computed(
-        () => Object.keys(intervals).find((key) => matches[key].only) || ''
+        () => intervals.find(([key]) => matches[key].only)?.[0] || ''
       ),
       hover: 'hover',
       orientation: 'landscape' as Orientation,
@@ -68,35 +90,30 @@ export const VueResponsiveness = {
         contrast: 'no-preference' as PrefersContrast,
         reducedMotion: 'no-preference' as PrefersReducedMotion
       },
-      ...Object.keys(intervals).reduce((acc, key) => {
+      ...intervals.reduce((acc, [key]) => {
         acc[key] = { min: false, max: false, only: false }
         return acc
       }, {} as Partial<VueResponsivenessMatches>)
     }) as VueResponsivenessMatches
 
     if (typeof window !== 'undefined') {
-      Object.entries(intervals).forEach(([interval, mediaQueries]) => {
-        const queryLists = {
-          min: window.matchMedia(mediaQueries.min),
-          max: window.matchMedia(mediaQueries.max)
-        }
-        Object.entries(queryLists).forEach(([key, mediaQueryList]) => {
-          const listener = ({
-            matches: val
-          }: MediaQueryListEvent | MediaQueryList) => {
-            const { min, max } = {
-              ...matches[interval],
-              [key]: val
-            } as { min: boolean; max: boolean }
-            Object.assign(matches[interval], { min, max, only: min && max })
-          }
-          mediaQueryList.addEventListener('change', listener)
-          cleanups.push(() =>
-            mediaQueryList.removeEventListener('change', listener)
-          )
-          listener(mediaQueryList)
+      const queryLists = widths.map((min) =>
+        window.matchMedia(`(min-width: ${min}px)`)
+      )
+      const updateBreakpoints = () => {
+        indices.forEach(([key, index]) => {
+          const min = queryLists[index].matches
+          const max = !queryLists[index + 1]?.matches
+          Object.assign(matches[key], { min, max, only: min && max })
         })
+      }
+      queryLists.forEach((query) => {
+        query.addEventListener('change', updateBreakpoints)
+        cleanups.push(() =>
+          query.removeEventListener('change', updateBreakpoints)
+        )
       })
+      updateBreakpoints()
 
       const additionalQueries: QueryConfig[] = [
         ['orientation', ['portrait', 'landscape']],

@@ -164,7 +164,11 @@ Separate Vue apps, including server-rendered apps, have independent state and li
 
 ### Define custom breakpoints
 
-Pass an object whose keys are your breakpoint names and whose values are the minimum width in pixels. The plugin calculates each breakpoint's maximum width from the next breakpoint.
+Pass an object whose keys are your breakpoint names and whose values are the minimum width in pixels. Each interval includes its minimum and ends immediately before the next distinct minimum, including at fractional viewport widths.
+
+Widths must be finite, non-negative numbers; `null` remains supported as an alias for zero. Names cannot be empty, collide with `$matches` members (such as `current` or `prefers`), use inherited object names, or start with Vue's reserved `__v_` prefix. Invalid configuration throws before listeners are attached.
+
+An empty object enables preference queries without width breakpoints. Names sharing a minimum width are aliases for the same interval; `current` selects the first configured name at that width.
 
 ```ts
 app.use(VueResponsiveness, {
@@ -177,7 +181,7 @@ app.use(VueResponsiveness, {
 Then use those names in templates:
 
 ```html
-<!-- @media (min-width: 777px) and (max-width: 1233.9px) -->
+<!-- Applies when 777px <= viewport width < 1234px -->
 <template v-if="$matches.medium.only">
   <TwoColumnLayout />
 </template>

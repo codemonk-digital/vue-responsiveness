@@ -98,6 +98,86 @@ describe('responsive state', () => {
     expect(render({ md: 600 }).attributes('data-current')).toBe('')
   })
 
+  it.each([575.9, 575.95, 575.999, 576, 576.01])(
+    'matches exactly one interval at fractional width %s',
+    async (width) => {
+      const wrapper = render()
+      mediaQueries.update({ width })
+      await nextTick()
+      const state = JSON.parse(wrapper.text())
+      expect(wrapper.attributes('data-current')).toBe(width < 576 ? 'xs' : 'sm')
+      expect(
+        ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'].filter((key) => state[key].only)
+      ).toHaveLength(1)
+      expect(state.xs.max).toBe(!state.sm.min)
+    }
+  )
+
+  it('supports a single breakpoint and fractional configured thresholds', async () => {
+    const wrapper = render({ md: 0.25 })
+    mediaQueries.update({ width: 0.25 })
+    await nextTick()
+    expect(wrapper.attributes('data-only')).toBe('true')
+    mediaQueries.update({ width: 0.249 })
+    await nextTick()
+    expect(wrapper.attributes('data-current')).toBe('')
+    expect(wrapper.attributes('data-max')).toBe('true')
+  })
+
+  it.each([
+    [{ current: 0 }, 'reserved or empty'],
+    [{ isMin: 0 }, 'reserved or empty'],
+    [{ isMax: 0 }, 'reserved or empty'],
+    [{ isOnly: 0 }, 'reserved or empty'],
+    [{ prefers: 0 }, 'reserved or empty'],
+    [{ orientation: 0 }, 'reserved or empty'],
+    [{ hover: 0 }, 'reserved or empty'],
+    [{ constructor: 0 }, 'reserved or empty'],
+    [JSON.parse('{"__proto__": 0}'), 'reserved or empty'],
+    [{ __v_isReactive: 0 }, 'reserved or empty'],
+    [{ ' ': 0 }, 'reserved or empty'],
+    [{ small: -1 }, 'finite non-negative number'],
+    [{ small: NaN }, 'finite non-negative number'],
+    [{ small: Infinity }, 'finite non-negative number'],
+    [{ small: '600' }, 'finite non-negative number']
+  ])(
+    'rejects invalid configuration %j before attaching listeners',
+    (configuration, message) => {
+      const app = createSSRApp({})
+      const unmount = app.unmount
+      expect(() =>
+        VueResponsiveness.install(
+          app,
+          configuration as VueResponsivenessBreakpoints
+        )
+      ).toThrow(message)
+      expect(mediaQueries.matchMedia).not.toHaveBeenCalled()
+      expect(app.unmount).toBe(unmount)
+      expect(app.config.globalProperties).not.toHaveProperty('$matches')
+    }
+  )
+
+  it('supports an empty configuration for preference-only use', async () => {
+    const wrapper = render({})
+    expect(wrapper.attributes('data-current')).toBe('')
+    mediaQueries.update({ colorScheme: 'dark' })
+    await nextTick()
+    expect(JSON.parse(wrapper.text()).prefers.colorScheme).toBe('dark')
+  })
+
+  it('treats duplicate minimum widths as aliases of the same interval', async () => {
+    const wrapper = render({ phone: null, small: 0, medium: 600 })
+    mediaQueries.update({ width: 500 })
+    await nextTick()
+    const state = JSON.parse(wrapper.text())
+    expect(state.phone).toEqual({ min: true, max: true, only: true })
+    expect(state.small).toEqual(state.phone)
+    expect(state.current).toBe('phone')
+    mediaQueries.update({ width: 600 })
+    await nextTick()
+    expect(wrapper.attributes('data-current')).toBe('medium')
+  })
+
   it('updates all supported media preferences in rendered output', async () => {
     const wrapper = render()
     const initial = JSON.parse(wrapper.text())
