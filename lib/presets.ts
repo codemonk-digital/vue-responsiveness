@@ -1,4 +1,4 @@
-import type { VueResponsivenessBreakpoints } from './types'
+import type { VueResponsivenessBreakpoints } from './types.js'
 
 export type PresetName =
   | 'Ant_Design'

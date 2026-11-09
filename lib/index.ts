@@ -1,4 +1,4 @@
-import type { VueResponsivenessMatches } from './types'
+import type { VueResponsivenessMatches } from './types.js'
 
 declare module 'vue' {
   interface ComponentCustomProperties {
@@ -6,6 +6,6 @@ declare module 'vue' {
   }
 }
 
-export * from './presets'
-export * from './types'
-export * from './vue-responsiveness'
+export * from './presets.js'
+export * from './types.js'
+export * from './vue-responsiveness.js'
