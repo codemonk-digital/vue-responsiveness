@@ -242,6 +242,12 @@ describe('<MyComponent />', () => {
 })
 ```
 
+## Development checks
+
+Run `pnpm verify` before committing. It runs lint, typechecks the app/library, tests, and tooling configurations, builds the package, and runs the tests with library coverage enforcement. CI runs the same command after a frozen-lockfile install.
+
+For a focused check, use `pnpm typecheck`, `pnpm lint`, or `pnpm coverage`. Test cases live in `lib/**/*.test.ts` or `test/**/*.test.ts`; the test adapter models viewport and preference changes independently of the demo.
+
 ## How it works
 
 - Vue Responsiveness uses [`window.matchMedia(queryString)`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia), the same browser API behind CSS media queries.

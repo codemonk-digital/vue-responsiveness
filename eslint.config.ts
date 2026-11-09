@@ -22,7 +22,7 @@ export default defineConfigWithVueTs(
   
   {
     ...pluginVitest.configs.recommended,
-    files: ['src/**/__tests__/*'],
+    files: ['lib/**/*.{test,spec}.ts', 'test/**/*.{test,spec}.ts'],
   },
   {
     rules: {

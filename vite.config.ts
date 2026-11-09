@@ -19,12 +19,12 @@ const config: UserConfigExport = {
   ],
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src')
+      '@': resolve(import.meta.dirname, './src')
     }
   },
   build: {
     lib: {
-      entry: resolve(__dirname, 'lib/index.ts'),
+      entry: resolve(import.meta.dirname, 'lib/index.ts'),
       name: 'VueResponsiveness',
       formats: ['es', 'umd'],
       fileName: 'vue-responsiveness'

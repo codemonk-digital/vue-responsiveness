@@ -1,18 +1,17 @@
-import { mergeConfig, defineConfig, configDefaults as vitestConfig } from 'vitest/config'
-import viteConfig from './vite.config'
-import { resolve } from 'path'
+import { defineConfig } from 'vitest/config'
 
-export default mergeConfig(
-  viteConfig,
-  defineConfig({
-    test: {
-      environment: 'jsdom',
-      include: ['**/lib/*.{test,spec}.?(c|m)[jt]s?(x)'],
-      coverage: {
-        exclude: [...(vitestConfig.coverage.exclude || []), '**/src/*']
-      },
-      setupFiles: [resolve(__dirname, 'test/setup.ts')],
-      reporters: ['dot']
+export default defineConfig({
+  test: {
+    environment: 'jsdom',
+    include: ['lib/**/*.{test,spec}.ts', 'test/**/*.{test,spec}.ts'],
+    coverage: {
+      provider: 'v8',
+      include: ['lib/**/*.ts'],
+      exclude: ['lib/**/*.{test,spec}.ts', 'lib/**/*.d.ts'],
+      reporter: ['text', 'json', 'html'],
+      thresholds: { lines: 100, statements: 100, functions: 100, branches: 100 }
     },
-  }),
-)
+    setupFiles: ['./test/setup.ts'],
+    reporters: ['dot']
+  }
+})
