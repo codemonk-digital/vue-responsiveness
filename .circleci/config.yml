@@ -1,18 +1,24 @@
 version: 2.1
 
-orbs:
-  browser-tools: circleci/browser-tools@1.2.3
 jobs:
-  test:
+  verify:
     docker:
-      - image: cimg/base:stable
+      - image: node:22
     steps:
       - checkout
       - run:
-          name: "Test"
-          command: "echo testing 1 2 3..."
+          name: Enable the pinned package manager
+          command: corepack enable
+      - run:
+          name: Install dependencies
+          command: pnpm install --frozen-lockfile
+      - run:
+          name: Lint, typecheck, build, and test
+          command: pnpm verify
+      - store_artifacts:
+          path: coverage
 
 workflows:
-  test-workflow:
+  verification:
     jobs:
-      - test
+      - verify

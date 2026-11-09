@@ -40,8 +40,12 @@ function evaluate(query: string, state: MediaState): boolean {
   throw new Error(`Unsupported media query in test adapter: ${query}`)
 }
 
-class TestMediaQueryList extends EventTarget implements MediaQueryList {
-  onchange: MediaQueryList['onchange'] = null
+type ModernMediaQueryList = Pick<
+  MediaQueryList,
+  'media' | 'matches' | 'addEventListener' | 'removeEventListener'
+>
+
+class TestMediaQueryList extends EventTarget implements ModernMediaQueryList {
   private readonly changeListeners =
     new Set<EventListenerOrEventListenerObject>()
 
@@ -74,21 +78,12 @@ class TestMediaQueryList extends EventTarget implements MediaQueryList {
     if (type === 'change' && listener) this.changeListeners.delete(listener)
   }
 
-  addListener(listener: Parameters<MediaQueryList['addListener']>[0]) {
-    this.addEventListener('change', listener as EventListener | null)
-  }
-
-  removeListener(listener: Parameters<MediaQueryList['removeListener']>[0]) {
-    this.removeEventListener('change', listener as EventListener | null)
-  }
-
   notify() {
     const event = Object.assign(new Event('change'), {
       matches: this.matches,
       media: this.media
-    }) as MediaQueryListEvent
+    })
     this.dispatchEvent(event)
-    this.onchange?.call(this, event)
   }
 }
 
@@ -97,7 +92,7 @@ export function createMediaQueries(initial: Partial<MediaState> = {}) {
   let state = { ...defaults, ...initial }
   const lists: TestMediaQueryList[] = []
   return {
-    matchMedia: vi.fn((query: string): MediaQueryList => {
+    matchMedia: vi.fn((query: string): ModernMediaQueryList => {
       const list = new TestMediaQueryList(query, evaluate(query, state))
       lists.push(list)
       return list
