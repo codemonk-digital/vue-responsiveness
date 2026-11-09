@@ -1,9 +1,9 @@
 import type {
   VueResponsivenessBreakpoints,
   VueResponsivenessMatches
-} from './types'
+} from './types.js'
 import type { App, InjectionKey } from 'vue'
-import { Presets } from './presets'
+import { Presets } from './presets.js'
 import { reactive, computed, getCurrentInstance, inject } from 'vue'
 
 type Orientation = 'portrait' | 'landscape'

@@ -250,9 +250,11 @@ describe('<MyComponent />', () => {
 
 ## Development checks
 
-Run `pnpm verify` before committing. It runs lint, typechecks the app/library, tests, and tooling configurations, builds the package, and runs the tests with library coverage enforcement. CI runs the same command after a frozen-lockfile install.
+Run `pnpm verify` before committing. It runs lint, typechecks the app/library, tests, and tooling configurations, builds the package, checks its published entry points, and runs the tests with library coverage enforcement. CI runs the same command after a frozen-lockfile install.
 
 For a focused check, use `pnpm typecheck`, `pnpm lint`, or `pnpm coverage`. Test cases live in `lib/**/*.test.ts` or `test/**/*.test.ts`; the test adapter models viewport and preference changes independently of the demo.
+
+After a build, `pnpm check:package` checks the emitted declarations with both NodeNext and bundler resolution, and exercises the ES module and CommonJS entry points. The library declaration configuration is `tsconfig.lib.json`; published source files exclude tests and snapshots.
 
 ## How it works
 

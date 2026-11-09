@@ -1,4 +1,4 @@
-import { defineConfig, UserConfigExport } from 'vite'
+import { defineConfig, type UserConfigExport } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import dts from 'unplugin-dts/vite'
@@ -7,14 +7,7 @@ const config: UserConfigExport = {
   plugins: [
     vue(),
     dts({
-      tsconfigPath: './tsconfig.app.json',
-      include: ['./lib'],
-      exclude: ['./src', './lib/**/*.test.ts'],
-      beforeWriteFile(filePath) {
-        return {
-          filePath: filePath.replace(/([/\\]dist)[/\\]lib([/\\])/, '$1$2')
-        }
-      }
+      tsconfigPath: './tsconfig.lib.json'
     })
   ],
   resolve: {
